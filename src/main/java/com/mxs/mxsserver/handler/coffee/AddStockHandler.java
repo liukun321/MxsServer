@@ -1,5 +1,8 @@
 package com.mxs.mxsserver.handler.coffee;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.annotation.PostConstruct;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -52,27 +55,33 @@ public class AddStockHandler extends RequestHandler {
 		Material material = new Material();
 		material.setMachineId(addStockRequest.getLinkFrame().key);
 		String inventory = addStockRequest.getInventory();
-		JSONArray array = JSON.parseArray(inventory);
+		Map<String, String> map = JSON.parseObject(inventory, Map.class);
 		
-		for (int i = 0; i < array.size(); i++) {
-			JSONObject jsonObj = array.getJSONObject(i);
-			int id = jsonObj.getInteger("id");
-
-			double value = jsonObj.getDouble("value");
-			if (id == 1)
-				material.setWater(value);
-			else if (id == 2)
-				material.setCupnum(value);
-			else if (id == 3)
-				material.setMilk(value);
-			else if (id == 4)
-				material.setSugar(value);
-			else if (id == 5)
-				material.setChocolate(value);
-			else if (id == 6)
-				material.setMilktea(value);
-			else if (id == 7)
+		for(Entry<String, String> entry: map.entrySet()){
+			String key = entry.getKey();
+			double value = Double.parseDouble(entry.getValue());
+			if ("number1".equals(key))
 				material.setCoffeebean(value);
+			if ("number2".equals(key))
+				material.setLcoffeebean(value);
+			if ("number3".equals(key))
+				material.setMaccha_powder(value);
+			if ("number4".equals(key))
+				material.setCocoa_powder(value);
+			if ("number5".equals(key))
+				material.setMilk(value);
+			if ("number6".equals(key))
+				material.setVanilla_sugar(value);
+			if ("number7".equals(key))
+				material.setVanilla_sugar(value);
+			if ("number8".equals(key))
+				material.setCaramel_sugar(value);
+			if ("number9".equals(key))
+				material.setPure_sugar(value);
+			if ("number10".equals(key))
+				material.setWater(value);
+			if ("number11".equals(key))
+				material.setCupnum(value);
 		}
 		Material m = materialService.updateMaterial(material);
 		return m;

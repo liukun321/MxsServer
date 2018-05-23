@@ -53,11 +53,15 @@ public class ErrorRecord implements Serializable {
 	
 	/**
 	 * 错误类型
-	 * 1  警告
+	 * 0 缺料预警
+	 * 1  严重警告
 	 * 2 停机
 	 */
 	@NotNull
 	private Integer type;
+	//运营人员编号
+	@NotNull
+	private String workerId;
 	/**
 	 * 错误出现的次数统计,默认为0
 	 */
@@ -105,6 +109,13 @@ public class ErrorRecord implements Serializable {
 	public void setSumError(Integer sumError) {
 		this.sumError = sumError;
 	}
+	
+	public String getWorkerId() {
+		return workerId;
+	}
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -116,6 +127,7 @@ public class ErrorRecord implements Serializable {
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
 		result = prime * result + ((sumError == null) ? 0 : sumError.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((workerId == null) ? 0 : workerId.hashCode());
 		return result;
 	}
 	@Override
@@ -162,12 +174,18 @@ public class ErrorRecord implements Serializable {
 				return false;
 		} else if (!type.equals(other.type))
 			return false;
+		if (workerId == null) {
+			if (other.workerId != null)
+				return false;
+		} else if (!workerId.equals(other.workerId))
+			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
 		return "ErrorRecord [id=" + id + ", machineId=" + machineId + ", startTime=" + startTime + ", endTime="
-				+ endTime + ", durationTime=" + durationTime + ", type=" + type + ", sumError=" + sumError + "]";
+				+ endTime + ", durationTime=" + durationTime + ", type=" + type + ", workerId=" + workerId
+				+ ", sumError=" + sumError + "]";
 	}
 
 }

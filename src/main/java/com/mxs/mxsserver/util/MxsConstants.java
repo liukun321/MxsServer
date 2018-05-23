@@ -17,7 +17,7 @@ public class MxsConstants {
 	
 	public static final String ERROR = "error";
 	//成功的状态码
-	public static final String CODE0 = "0000";
+	public static final String CODE0 = "200";
 	//失败状态码1， 表示代码运行发生异常
 	public static final String CODE1 = "0001";
 	//失败状态码2，表示电话号码格式不匹配

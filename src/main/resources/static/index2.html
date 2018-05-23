@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="utf-8" />
+
+<title>Demo Chat</title>
+
+<link href="bootstrap.css" rel="stylesheet">
+
+<style>
+body {
+	padding: 20px;
+}
+
+#console {
+	height: 400px;
+	overflow: auto;
+}
+
+.username-msg {
+	color: orange;
+}
+
+.connect-msg {
+	color: green;
+}
+
+.disconnect-msg {
+	color: red;
+}
+
+.send-msg {
+	color: #888
+}
+</style>
+
+
+<script src="js/socket.io/socket.io.js"></script>
+<script src="js/moment.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script>
+	var isInRoom = false;
+	var userId;
+	var userName;
+	var room = "";
+
+	var socket;
+	function connect() {
+		socket = io.connect('http://localhost:9090?zjh_header_user_token='
+				+ $('#token').val());
+
+		socket.on('connectedSocket', function(data) {
+			userId = data.userId;
+			userName = data.username;
+			output('<span class="connect-msg"> connectedSocket ' + userName
+					+ ' has connected to the server!</span>');
+		})
+
+		socket.on('connect', function() {
+			output('<span class="connect-msg"> connect ' + userName
+					+ ' has connected to the server!</span>');
+		});
+
+		socket.on('onTalk', function(data) {
+			output('<span class="username-msg">' + data + '</span> ');
+		});
+
+		socket.on('disconnect',	function() {
+			output('<span class="disconnect-msg">The client has disconnected!</span>');
+		});
+		
+		//room 监听
+		socket.on('onInRoom', function(data) {
+			output('<span class="username-msg">' + data + '</span> ');
+		});
+		
+		socket.on('onQuitRoom', function(data) {
+			output('<span class="username-msg">' + data + '</span> ');
+		});
+		
+	}
+
+	function sendDisconnect() {
+		socket.disconnect();
+	}
+
+	function sendMessage() {
+		var message = $('#msg').val();
+		
+		$('#msg').val('');
+
+		var jsonObject = {
+			room : room,
+			content : message
+		};
+		socket.emit('talk', jsonObject);
+	}
+
+	function output(message) {
+		var currentTime = "<span class='time'>"
+				+ moment().format('HH:mm:ss.SSS') + "</span>";
+		var element = $("<div>" + currentTime + " " + message + "</div>");
+		$('#console').prepend(element);
+	}
+
+	$(document).keydown(function(e) {
+		if (e.keyCode == 13) {
+			$('#send').click();
+		}
+	});
+</script>
+
+<script>
+	//test script
+	function test() {
+		var currentTime = "<span class='time'>"
+				+ moment().format('HH:mm:ss.SSS') + "</span>";
+		var element = $("<div>" + currentTime + " 发出acktest信号 </div>");
+		$('#console').prepend(element);
+
+		socket.emit('ackTest', null, function(data) {
+			console.log("test1接收到ack数据：" + data);
+		});
+	}
+
+	function test2() {
+		socket.emit('ackTest2', null, function(data) {
+			console.log("test2接收到ack数据：" + data);
+		});
+	}
+</script>
+
+<script>
+	//room script
+
+	function createRoom() {
+		socket.emit('createRoom', null, function(data) {
+			room = data.roomId;
+			console.log(data);
+		});
+	}
+	
+	function inRoom() {
+		socket.emit('inRoom', $('#roomId').val(), function(data) {
+			room = data.roomId;
+			console.log(data);
+		});
+	}
+	
+	function quitRoom() {
+		socket.emit('quitRoom', null, function(data) {
+			room = "";
+			console.log(data);
+		})
+	}
+	
+	function startGame() {
+		socket.emit('gameStart', null, function(data) {
+			console.log(data);
+		})
+	}
+	
+	function yaZhu() {
+		socket.emit('yazhu', $('#cost').val(), function(data) {
+			console.log(data);
+		})
+	}
+	
+	function exitThisRound() {
+		socket.emit('exitThisRound', null, function(data) {
+			console.log(data);
+		})
+	}
+	
+	function openThisRound() {
+		socket.emit('openThisRound', null, function(data) {
+			console.log(data);
+		})
+	}
+</script>
+
+</head>
+
+<body>
+
+	<h1>Netty-socketio Demo Chat</h1>
+
+	<br />
+
+	<div id="console" class="well"></div>
+
+	<form class="well form-inline" onsubmit="return false;">
+		<input id="msg" class="input-xlarge" type="text"
+			placeholder="Type something..." />
+		<button type="button" onClick="sendMessage()" class="btn" id="send">Send</button>
+		<br />
+		<input id="username" type="text" placeholder="username" />
+		<input id="password" type="text" placeholder="password" />
+		<button type="button" class="btn" id="login">LOGIN</button>
+		<button type="button" class="btn" id="register">REGISTER</button>
+		<br />
+		<input id="token" type="text" placeholder="your token to socketio" />
+		<button type="button" onClick="connect()" class="btn" id="conn">Connect</button>
+		<button type="button" onClick="sendDisconnect()" class="btn">Disconnect</button>
+		
+		<br /> <br />
+		<input id="roomId" class="input-xlarge" type="text" placeholder="room id" />
+		<button type="button" onClick="test()" class="btn">test</button>
+		<button type="button" onClick="test2()" class="btn">test2</button>
+		<br />
+		<button type="button" onClick="createRoom()" class="btn">CreateRoom</button>
+		<button type="button" onClick="inRoom()" class="btn">InRoom</button>
+		<button type="button" onClick="quitRoom()" class="btn">quitRoom</button>
+		<br />
+		<input id="cost" class="input-xlarge" type="text" placeholder="押注大小" />
+		<button type="button" onClick="startGame()" class="btn">StartGame</button>
+		<button type="button" onClick="yaZhu()" class="btn">YaZhu</button>
+		<button type="button" onClick="exitThisRound()" class="btn">ExitThisRound</button>
+		<button type="button" onClick="openThisRound()">OpenThisRound</button>
+	</form>
+
+
+
+</body>
+
+
+<script >
+function postData(url, data){
+	$.ajax({
+		type:"post",
+		url:url,
+		async:true,
+		data:JSON.stringify(data),
+		dataType: "json",
+		contentType: "application/json; charset=utf-8",
+		success: function(data){
+			console.log("success, data:"+data);
+			document.getElementById("token").value=data.content.zjh_header_user_token
+		},
+		error: function(){
+			console.log('fail');
+		}
+	});
+}
+var login = document.getElementById("login")
+login.onclick=function(){
+	var data = {
+			"username":document.getElementById("username").value,
+			"password":document.getElementById("password").value
+	}
+	postData("http://localhost:8080/login", data);	
+}
+var register = document.getElementById("register");
+register.onclick=function() {
+	var data = {
+			"username":document.getElementById("username").value,
+			"password":document.getElementById("password").value
+	}
+	postData("http://localhost:8080/registe", data);
+}
+
+</script>
+
+</html>

@@ -10,6 +10,7 @@ import com.mxs.mxsserver.handler.KeepAliveRequestHandle;
 import com.mxs.mxsserver.handler.LoginRequestHandler;
 import com.mxs.mxsserver.handler.RequestHandler;
 import com.mxs.mxsserver.handler.coffee.AddStockHandler;
+import com.mxs.mxsserver.handler.coffee.AlarmForMaterialResquestHandler;
 import com.mxs.mxsserver.handler.coffee.CancelTradeHandler;
 import com.mxs.mxsserver.handler.coffee.GetAdvPicsRequestHandler;
 import com.mxs.mxsserver.handler.coffee.GetCoffeeRequestHandler;
@@ -27,6 +28,7 @@ import com.mxs.mxsserver.protocol.request.LoginRequest;
 import com.mxs.mxsserver.protocol.request.Request;
 import com.mxs.mxsserver.protocol.request.RequestID;
 import com.mxs.mxsserver.protocol.request.coffee.AddStockRequest;
+import com.mxs.mxsserver.protocol.request.coffee.AlarmForMaterialResquest;
 import com.mxs.mxsserver.protocol.request.coffee.CancelTradeRequest;
 import com.mxs.mxsserver.protocol.request.coffee.GetAdvPicRequest;
 import com.mxs.mxsserver.protocol.request.coffee.GetCoffeeRequest;
@@ -91,6 +93,8 @@ public class RequestFactory {
 		registerRequest(GetCouponsRequest.class, new GetCouponsRequestHandler());
 		//更新咖啡机地理位置信息
 		registerRequest(UpdateMachineAddressRequest.class, new UpdateMachineAddressHandler());
+		//物料报警
+		registerRequest(AlarmForMaterialResquest.class, new AlarmForMaterialResquestHandler());
 	}
 
 	private void registerRequest(Class<? extends Request> clazz, RequestHandler handler) {

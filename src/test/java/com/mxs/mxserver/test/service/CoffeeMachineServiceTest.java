@@ -28,7 +28,9 @@ public class CoffeeMachineServiceTest {
 		coffeeMachine.setStatus(1);
 		coffeeMachine.setMachineId("rr2329unvrnr2rm");
 		coffeeMachine.setUpdateTime(new Date());
-		coffeeMachine.setNumber(13);
+		coffeeMachine.setMachineCode("10001");
+		coffeeMachine.setType(0);
+		coffeeMachine.setMachineCode("10003420");
 		CoffeeMachine cm = coffeeMachineService.addCoffeeMachine(coffeeMachine);
 		System.out.println(cm.toString());
 	}

@@ -15,48 +15,50 @@ public class CoffeeInfo implements Serializable{
 	 */
 	private static final long serialVersionUID = -6842830008281182067L;
 	@Id
-	private Integer coffeeId;
+	private String coffeeId;
 	@NotNull
 	private String coffeeName;
+	/**
+	 * 原价
+	 */
 	@NotNull
 	private Double price;
-	private Double discount;
+	/**
+	 * 折后价
+	 */
+	@NotNull
+	private Double discount_price;
+	@NotNull
 	private String imgurl;
-//	@NotNull
-//	private Integer soldnum;
-//	private Double volumn;
-	private Boolean is_new;
-	
+	@NotNull
+	private Boolean is_new = false;
+	@NotNull
 	private Boolean is_hot;
 	@NotNull
 	private Boolean isSugar;
+	/**
+	 * 是否打折
+	 */
+	private Boolean discount;
 
-	public Integer getCoffeeId() {
+	public String getCoffeeId() {
 		return coffeeId;
+	}
+
+	public void setCoffeeId(String coffeeId) {
+		this.coffeeId = coffeeId;
 	}
 
 	public Double getPrice() {
 		return price;
 	}
 
-	public Double getDiscount() {
-		return discount;
-	}
-
 	public String getImgurl() {
 		return imgurl;
 	}
 
-	public void setCoffeeId(Integer coffeeId) {
-		this.coffeeId = coffeeId;
-	}
-
 	public void setPrice(Double price) {
 		this.price = price;
-	}
-
-	public void setDiscount(Double discount) {
-		this.discount = discount;
 	}
 
 	public void setImgurl(String imgurl) {
@@ -95,6 +97,22 @@ public class CoffeeInfo implements Serializable{
 		this.is_hot = is_hot;
 	}
 
+	public Boolean getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Boolean discount) {
+		this.discount = discount;
+	}
+
+	public Double getDiscount_price() {
+		return discount_price;
+	}
+
+	public void setDiscount_price(Double discount_price) {
+		this.discount_price = discount_price;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -102,6 +120,7 @@ public class CoffeeInfo implements Serializable{
 		result = prime * result + ((coffeeId == null) ? 0 : coffeeId.hashCode());
 		result = prime * result + ((coffeeName == null) ? 0 : coffeeName.hashCode());
 		result = prime * result + ((discount == null) ? 0 : discount.hashCode());
+		result = prime * result + ((discount_price == null) ? 0 : discount_price.hashCode());
 		result = prime * result + ((imgurl == null) ? 0 : imgurl.hashCode());
 		result = prime * result + ((isSugar == null) ? 0 : isSugar.hashCode());
 		result = prime * result + ((is_hot == null) ? 0 : is_hot.hashCode());
@@ -134,6 +153,11 @@ public class CoffeeInfo implements Serializable{
 				return false;
 		} else if (!discount.equals(other.discount))
 			return false;
+		if (discount_price == null) {
+			if (other.discount_price != null)
+				return false;
+		} else if (!discount_price.equals(other.discount_price))
+			return false;
 		if (imgurl == null) {
 			if (other.imgurl != null)
 				return false;
@@ -164,9 +188,9 @@ public class CoffeeInfo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "CoffeeInfo [coffeeId=" + coffeeId + ", coffeeName=" + coffeeName + ", price=" + price + ", discount="
-				+ discount + ", imgurl=" + imgurl + ", is_new=" + is_new + ", is_hot=" + is_hot + ", isSugar=" + isSugar
-				+ "]";
+		return "CoffeeInfo [coffeeId=" + coffeeId + ", coffeeName=" + coffeeName + ", price=" + price
+				+ ", discount_price=" + discount_price + ", imgurl=" + imgurl + ", is_new=" + is_new + ", is_hot="
+				+ is_hot + ", isSugar=" + isSugar + ", discount=" + discount + "]";
 	}
 
 }

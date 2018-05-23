@@ -13,16 +13,13 @@ public class PayBarCodeRequest extends SingleRequest {
 	//咖啡产品信息
 	@PackIndex(1)
 	private String coffeeId;
-	//支付方式
-//	@PackIndex(2)
-//	private String provider;
 	//购买者的条形码信息
 	@PackIndex(2)
 	private String authCode;
 	//咖啡机编号
 	@PackIndex(3)
 	private String machineId;
-//	//原始价钱
+//	//折扣
 	@PackIndex(4)
 	private String discount;
 	
@@ -38,21 +35,25 @@ public class PayBarCodeRequest extends SingleRequest {
      */
 	@PackIndex(6)
     private int sugar;
-	
+	/**
+	 * 机器IP
+	 */
 	@PackIndex(7)
     private String ip;
-	
+	//优惠券类型
+//	@PackIndex(8)
+//	private int couponsType;
 	
 	@Override
     public Unpack unpackBody(Unpack unpack) throws Exception {
 		coffeeId = unpack.popVarstr();
-//		provider = unpack.popVarstr();
 		authCode = unpack.popVarstr();
 		machineId = unpack.popVarstr();
 		discount = unpack.popVarstr();
 		isHot = unpack.popBoolean();
 		sugar = unpack.popInt();
 		ip = unpack.popVarstr();
+//		couponsType = unpack.popInt();
         return null;
     }
 
@@ -61,9 +62,13 @@ public class PayBarCodeRequest extends SingleRequest {
 		return coffeeId;
 	}
 
-
-//	public String getProvider() {
-//		return provider;
+//	public int getCouponsType() {
+//		return couponsType;
+//	}
+//
+//
+//	public void setCouponsType(int couponsType) {
+//		this.couponsType = couponsType;
 //	}
 
 

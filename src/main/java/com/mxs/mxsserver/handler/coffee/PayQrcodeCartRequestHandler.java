@@ -90,7 +90,7 @@ public class PayQrcodeCartRequestHandler extends RequestHandler {
 		//将订单入库
 		Payindent payindent = new Payindent();
 		payindent.setIndentId(indent_id);
-		payindent.setCoffeeindent(payQrcodeCartRequest.getCoffeeIndents());
+		payindent.setCoffeeId(payQrcodeCartRequest.getCoffeeIndents());
 		payindent.setPrice(totalprice);
 		payindent.setPriceOri(totalprice);
 //		payindent.setPayMethod((int)payQrcodeCartRequest.getProvider());

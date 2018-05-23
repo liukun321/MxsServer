@@ -1,6 +1,7 @@
 package com.mxs.mxsserver.service.impl;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,11 +21,23 @@ public class CouponsServiceImpl implements CouponsService {
 	@Override
 	public Coupons queryCouponsByCode(String couponCode) {
 		Date date = new Date();
-		return couponsRepository.findByCouponCodeAndEndTimeAfter(couponCode, date);
+		Coupons coupons = couponsRepository.findByCouponCodeAndEndTimeAfter(couponCode, date);
+		if(null == coupons)
+			return null;
+		boolean isuse = coupons.isIs_use();
+		if(isuse) {
+			return null;
+		}
+		return coupons;
 	}
 
 	@Override
 	public Coupons addCoupons(Coupons coupons) {
+		return couponsRepository.save(coupons);
+	}
+
+	@Override
+	public Coupons updateCoupons(Coupons coupons) {
 		return couponsRepository.save(coupons);
 	}
 

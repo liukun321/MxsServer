@@ -134,8 +134,8 @@ public class AlipayUtils {
 		return response;
 	}
 	
-	public static void main(String[] args) {
-		/** 支付
+	/*public static void main(String[] args) {
+		*//** 支付
 		 * 20180508133938
 			13:39:38.950 [main] DEBUG sdk.biz.err - 2018-05-08 13:39:38^_^https://openapi.alipay.com/gateway.do?alipay_sdk=alipay-sdk-java-dynamicVersionNo&app_id=2018022802289573&biz_content=%7B++++%22out_trade_no%22%3A%2220180508133938%22%2C++++%22scene%22%3A%22bar_code%22%2C++++%22auth_code%22%3A%22285359210267119248%22%2C++++%22subject%22%3A%22MixiusiCoffee%22%2C++++%22store_id%22%3A%22904%22%2C++++%22timeout_express%22%3A%2290m%22%2C++++%22total_amount%22%3A%220.01%22++%7D&charset=utf-8&format=json&method=alipay.trade.pay&sign=HNvxT61qlpl9MWY2ozYVLGbm5P6a%2BdY6ed8pv19zuo0ilqTLvh5HYJy7kvwzJamjOttJA1%2BfY2l3%2BR1xtMv6rLx9oa8evZ0wmdDYCyuK3hoA2FVVAE5Ad3izfGkb7COIMBYcFRoCJQrbkB%2BZhzljk5seD7M5JIDONpeQ2mx0cKBoXk4iJ8TmfldxeYCXQsuoVMLeWqjylJa%2BRSbeEQgyTaxvMHcFXVY%2Fe1VkADeckD2J4a5Dy3otS6h5MqpEliidglsasdJQqHVYvDVGkePabmp%2FJY4E2RZKA%2BCGxcEjyhFWsoy3%2FW1ijuXLk%2BBAfmcnIl4p%2BDAmX5AiNPVjDE4Isg%3D%3D&sign_type=RSA2&timestamp=2018-05-08+13%3A39%3A38&version=1.0&sign=HNvxT61qlpl9MWY2ozYVLGbm5P6a%2BdY6ed8pv19zuo0ilqTLvh5HYJy7kvwzJamjOttJA1%2BfY2l3%2BR1xtMv6rLx9oa8evZ0wmdDYCyuK3hoA2FVVAE5Ad3izfGkb7COIMBYcFRoCJQrbkB%2BZhzljk5seD7M5JIDONpeQ2mx0cKBoXk4iJ8TmfldxeYCXQsuoVMLeWqjylJa%2BRSbeEQgyTaxvMHcFXVY%2Fe1VkADeckD2J4a5Dy3otS6h5MqpEliidglsasdJQqHVYvDVGkePabmp%2FJY4E2RZKA%2BCGxcEjyhFWsoy3%2FW1ijuXLk%2BBAfmcnIl4p%2BDAmX5AiNPVjDE4Isg%3D%3D
 			13:39:40.512 [main] INFO com.mxs.mxsserver.util.AlipayUtils - {"alipay_trade_pay_response":{"code":"10000","msg":"Success","buyer_logon_id":"130****9787","buyer_pay_amount":"0.01","buyer_user_id":"2088802784422153","fund_bill_list":[{"amount":"0.01","fund_channel":"ALIPAYACCOUNT"}],"gmt_payment":"2018-05-08 13:39:35","invoice_amount":"0.01","out_trade_no":"20180508133938","point_amount":"0.00","receipt_amount":"0.01","total_amount":"0.01","trade_no":"2018050821001004150540519241"},"sign":"N/swLSNmUijVrx9reWli8UHM1fHsYb4T8gVThtetP1K84n36nyaosFvtQshOH/swiH3QHZL/Cqi0IRdibFOsnOUnEN+JLEq9FIBR6L29eQ84hTqNdNVzZgdaLLJ9VEo3NztHn8dgiqx9lm8+P82vv3C2qXD6a8I/UAI8TSO3v3AwdT5XOTGIkPUVr2r3UW2PQDYWligA3zbU86sSD1ohOPGIICdwdCLNoNOJ0JDWoZK/G5Ecqcwn9Wl2Fh4UGjOEHaAcmWlaE71IK656GqpYBL65WjdUZAY8lXhMTe4W6YqbgX6HWHSdMdjtrv4KN59Xk+0p8nAt3h5AS5kS/y4wuQ=="}---支付宝返回的交易号：2018050821001004150540519241
@@ -149,7 +149,7 @@ public class AlipayUtils {
 			13:49:49.589 [main] INFO com.mxs.mxsserver.util.AlipayUtils - {"alipay_trade_query_response":{"code":"10000","msg":"Success","buyer_logon_id":"130****9787","buyer_pay_amount":"0.01","buyer_user_id":"2088802784422153","fund_bill_list":[{"amount":"0.01","fund_channel":"ALIPAYACCOUNT"}],"invoice_amount":"0.01","out_trade_no":"20180508133938","point_amount":"0.00","receipt_amount":"0.01","send_pay_date":"2018-05-08 13:39:35","total_amount":"0.01","trade_no":"2018050821001004150540519241","trade_status":"TRADE_SUCCESS"},"sign":"K+UqOErl4DDMYtaoHCOB4gu0tYNSutSKDgh4ph8ytUNkyQ0K0ezRuHzTMKBu0lxsd+JU2PQ/HjjpxgGKNDnkhNFDRRH68atxmx1R6KTE9wgfl1kaGL9T8ghJBs1clUp+x4wxkxH/uVwSCLj5hg68v273t7l+qNTct+fOGC9TosJb3LvTEAQO92Y5vN1bXiBItDxQCNPOG7X0gJC62VlA5Kv+xbprbhQDMQ8Ff1E17KEsiUXQkn+FfWEZBznsfWpV2av0wvsG+m5Fu9zzZyqmC27PsLn/ngb9x1oFQjkG6+emFezQSUYZTQiufLtHIoLwA9PQXqBhcXXQ8EAxQYnNpA=="}---TradeStatus : TRADE_SUCCESS
 			{"alipay_trade_query_response":{"code":"10000","msg":"Success","buyer_logon_id":"130****9787","buyer_pay_amount":"0.01","buyer_user_id":"2088802784422153","fund_bill_list":[{"amount":"0.01","fund_channel":"ALIPAYACCOUNT"}],"invoice_amount":"0.01","out_trade_no":"20180508133938","point_amount":"0.00","receipt_amount":"0.01","send_pay_date":"2018-05-08 13:39:35","total_amount":"0.01","trade_no":"2018050821001004150540519241","trade_status":"TRADE_SUCCESS"},"sign":"K+UqOErl4DDMYtaoHCOB4gu0tYNSutSKDgh4ph8ytUNkyQ0K0ezRuHzTMKBu0lxsd+JU2PQ/HjjpxgGKNDnkhNFDRRH68atxmx1R6KTE9wgfl1kaGL9T8ghJBs1clUp+x4wxkxH/uVwSCLj5hg68v273t7l+qNTct+fOGC9TosJb3LvTEAQO92Y5vN1bXiBItDxQCNPOG7X0gJC62VlA5Kv+xbprbhQDMQ8Ff1E17KEsiUXQkn+FfWEZBznsfWpV2av0wvsG+m5Fu9zzZyqmC27PsLn/ngb9x1oFQjkG6+emFezQSUYZTQiufLtHIoLwA9PQXqBhcXXQ8EAxQYnNpA=="}
 			10000---null---2018050821001004150540519241
-		 */
+		 *//*
 		String time = DateUtils.dateFormat("yyyyMMddHHmmss");
 		System.out.println(time);
 		Double price = 0.01;
@@ -163,5 +163,5 @@ public class AlipayUtils {
 			log.info(e.getErrMsg());
 		}
 	}
-	
+	*/
 }

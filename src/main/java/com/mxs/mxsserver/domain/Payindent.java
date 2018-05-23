@@ -32,10 +32,12 @@ public class Payindent implements Serializable{
 	/**
 	 * 订单详情,产品编号
 	 */
-	private String coffeeindent;
+	@NotNull
+	private String coffeeId;
 	/**
 	 * 订单原价
 	 */
+	@NotNull
 	private Double priceOri;
 	/**
 	 * 订单价格
@@ -71,20 +73,24 @@ public class Payindent implements Serializable{
 	private String orderId;
 	/**
 	 * true 热饮
-	 * fals 冷饮
+	 * false 冷饮
 	 */
+	@NotNull
 	private boolean isHot;
 	/**
 	 * 糖度
 	 * 0 1 2 3 4
 	 */
+	@NotNull
 	private Integer sugar;
-	
 	public String getIndentId() {
 		return indentId;
 	}
-	public String getCoffeeindent() {
-		return coffeeindent;
+	public String getMachineId() {
+		return machineId;
+	}
+	public String getCoffeeId() {
+		return coffeeId;
 	}
 	public Double getPriceOri() {
 		return priceOri;
@@ -98,11 +104,26 @@ public class Payindent implements Serializable{
 	public Integer getPayStatus() {
 		return payStatus;
 	}
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public String getOrderId() {
+		return orderId;
+	}
+	public boolean isHot() {
+		return isHot;
+	}
+	public Integer getSugar() {
+		return sugar;
+	}
 	public void setIndentId(String indentId) {
 		this.indentId = indentId;
 	}
-	public void setCoffeeindent(String coffeeindent) {
-		this.coffeeindent = coffeeindent;
+	public void setMachineId(String machineId) {
+		this.machineId = machineId;
+	}
+	public void setCoffeeId(String coffeeId) {
+		this.coffeeId = coffeeId;
 	}
 	public void setPriceOri(Double priceOri) {
 		this.priceOri = priceOri;
@@ -116,26 +137,11 @@ public class Payindent implements Serializable{
 	public void setPayStatus(Integer payStatus) {
 		this.payStatus = payStatus;
 	}
-	
-	public Date getCreateTime() {
-		return createTime;
-	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
-	
-	public String getMachineId() {
-		return machineId;
-	}
-	public void setMachineId(String machineId) {
-		this.machineId = machineId;
-	}
-	public boolean isHot() {
-		return isHot;
-	}
-	public Integer getSugar() {
-		return sugar;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 	public void setHot(boolean isHot) {
 		this.isHot = isHot;
@@ -143,17 +149,11 @@ public class Payindent implements Serializable{
 	public void setSugar(Integer sugar) {
 		this.sugar = sugar;
 	}
-	public String getOrderId() {
-		return orderId;
-	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((coffeeindent == null) ? 0 : coffeeindent.hashCode());
+		result = prime * result + ((coffeeId == null) ? 0 : coffeeId.hashCode());
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
 		result = prime * result + ((indentId == null) ? 0 : indentId.hashCode());
 		result = prime * result + (isHot ? 1231 : 1237);
@@ -175,10 +175,10 @@ public class Payindent implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Payindent other = (Payindent) obj;
-		if (coffeeindent == null) {
-			if (other.coffeeindent != null)
+		if (coffeeId == null) {
+			if (other.coffeeId != null)
 				return false;
-		} else if (!coffeeindent.equals(other.coffeeindent))
+		} else if (!coffeeId.equals(other.coffeeId))
 			return false;
 		if (createTime == null) {
 			if (other.createTime != null)
@@ -231,11 +231,9 @@ public class Payindent implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Payindent [indentId=" + indentId + ", machineId=" + machineId + ", coffeeindent=" + coffeeindent
-				+ ", priceOri=" + priceOri + ", price=" + price + ", payMethod=" + payMethod + ", payStatus="
-				+ payStatus + ", createTime=" + createTime + ", orderId=" + orderId + ", isHot=" + isHot + ", sugar="
-				+ sugar + "]";
+		return "Payindent [indentId=" + indentId + ", machineId=" + machineId + ", coffeeId=" + coffeeId + ", priceOri="
+				+ priceOri + ", price=" + price + ", payMethod=" + payMethod + ", payStatus=" + payStatus
+				+ ", createTime=" + createTime + ", orderId=" + orderId + ", isHot=" + isHot + ", sugar=" + sugar + "]";
 	}
-	
 	
 }

@@ -1,10 +1,12 @@
 package com.mxs.mxsserver.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mxs.mxsserver.domain.Employee;
 import com.mxs.mxsserver.repository.EmployeeRepository;
 import com.mxs.mxsserver.service.EmployeeService;
+@Transactional
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 	
@@ -23,8 +25,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public Employee queryEmployeeById(String employeeCode) {
-		return employeeRepository.findByEmployeeCode(employeeCode);
+	public Employee queryEmployeeByPhone(String phone) {
+		return employeeRepository.findByPhoneNumber(phone);
+	}
+
+	@Override
+	public Employee login4Employee(String tel, String password) {
+		return employeeRepository.findByPhoneNumberAndPassword(tel, password);
 	}
 
 }

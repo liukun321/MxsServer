@@ -1,5 +1,8 @@
 package com.mxs.mxsserver.handler.coffee;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.annotation.PostConstruct;
 
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -37,7 +40,6 @@ public class UpdateStockHandler extends RequestHandler {
 		log.info("更新咖啡机物料=" + updateStockRequest.getLinkFrame().key);
 		System.out.println(updateStockRequest.getInventory());
 
-//		int flag = database.UpdateMaterial(updateStockRequest.getLinkFrame().key, updateStockRequest.getInventory());
 		Material m = updateMaterial(updateStockRequest);
 		UpdateStockResponce updateStockResponce = new UpdateStockResponce(updateStockRequest.getLinkFrame().key);
 		updateStockResponce.getLinkFrame().serialId = request.getLinkFrame().serialId;
@@ -55,27 +57,44 @@ public class UpdateStockHandler extends RequestHandler {
 		System.out.println(addStockRequest.getLinkFrame().key);
 		material.setMachineId(addStockRequest.getLinkFrame().key);
 		String inventory = addStockRequest.getInventory();
-		JSONArray array = JSON.parseArray(inventory);
-		
-		for (int i = 0; i < array.size(); i++) {
-			JSONObject jsonObj = array.getJSONObject(i);
-			int id = jsonObj.getInteger("id");
-
-			double value = jsonObj.getDouble("value");
-			if (id == 1)
-				material.setWater(value);
-			else if (id == 2)
-				material.setCupnum(value);
-			else if (id == 3)
-				material.setMilk(value);
-			else if (id == 4)
-				material.setSugar(value);
-			else if (id == 5)
-				material.setChocolate(value);
-			else if (id == 6)
-				material.setMilktea(value);
-			else if (id == 7)
+		Map<String, String> map = JSON.parseObject(inventory, Map.class);
+			/*1号咖啡豆盒：正常咖啡豆（缺料预警）
+				2号咖啡豆盒：低因咖啡豆（缺料预警）
+				3号粉料盒：抹茶粉（不作监测）
+				4号粉料盒：可可粉（不作监测）
+				5号液体盒：牛奶（缺料预警）
+				6号液体盒：香草糖浆（不作监测）
+				7号液体盒：榛果糖浆（不作监测）
+				8号液体盒：焦糖糖浆（不作监测）
+				9号液体盒：纯糖浆（不作监测）
+				10号水盒：桶装水（缺料预警）
+				11号：杯子数量*/
+		//{"cupNum":"6","number1":"1","number2":"3","number3":"6","number4":"9","number9":"9","water":"9"}
+		for(Entry<String, String> entry: map.entrySet()){
+			String key = entry.getKey();
+			double value = Double.parseDouble(entry.getValue());
+			if ("number1".equals(key))
 				material.setCoffeebean(value);
+			if ("number2".equals(key))
+				material.setLcoffeebean(value);
+			if ("number3".equals(key))
+				material.setMaccha_powder(value);
+			if ("number4".equals(key))
+				material.setCocoa_powder(value);
+			if ("number5".equals(key))
+				material.setMilk(value);
+			if ("number6".equals(key))
+				material.setVanilla_sugar(value);
+			if ("number7".equals(key))
+				material.setVanilla_sugar(value);
+			if ("number8".equals(key))
+				material.setCaramel_sugar(value);
+			if ("number9".equals(key))
+				material.setPure_sugar(value);
+			if ("number10".equals(key))
+				material.setWater(value);
+			if ("number11".equals(key))
+				material.setCupnum(value);
 		}
 		Material m = materialService.updateMaterial(material);
 		return m;

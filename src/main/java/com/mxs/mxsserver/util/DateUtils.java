@@ -11,8 +11,9 @@ public class DateUtils {
 		return sdf.format(date);
 	}
 	
-//	public static void main(String[] args) {
-//		String time = dateFormat("yyyyMMddHHmmss");
-//		System.out.println(time);
-//	}
+	public static Long subtractForDate(Date start, Date end, long value) {
+		if(null == start || null == end || value <= 0)
+			return null;
+		return (end.getTime() - start.getTime())/value;
+	}
 }

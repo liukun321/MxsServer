@@ -8,6 +8,8 @@ import com.mxs.mxsserver.domain.Employee;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
-	Employee findByEmployeeCode(String employeeCode);
+	Employee findByPhoneNumber(String phoneNumber);
+
+	Employee findByPhoneNumberAndPassword(String tel, String password);
 
 }

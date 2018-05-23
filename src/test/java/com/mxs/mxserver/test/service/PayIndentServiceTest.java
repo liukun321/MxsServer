@@ -21,7 +21,7 @@ public class PayIndentServiceTest {
 	@Test
 	public void addPayindentTest() {
 		Payindent payindent = new Payindent();
-		payindent.setCoffeeindent(" ");
+		payindent.setCoffeeId("2339fr");
 		payindent.setCreateTime(new Date());
 		payindent.setIndentId("20180505154823");
 		payindent.setOrderId("243fdr32get");
@@ -30,6 +30,8 @@ public class PayIndentServiceTest {
 		payindent.setPrice(23.45);
 		payindent.setPriceOri(25.00);
 		payindent.setMachineId("35eerjh3jwe333");
+		payindent.setSugar(1);
+		payindent.setHot(false);
 		Payindent pi = payindentService.addPayindent(payindent);
 		System.out.println(pi.toString());
 	}

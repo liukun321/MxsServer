@@ -2,13 +2,12 @@ package com.mxs.mxsserver.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
@@ -30,9 +29,19 @@ public class Employee implements Serializable{
 	 * 运维人员编号
 	 */
 	@Id
-	private String employeeCode;
+	private String workerId;
+	/**
+	 * 昵称
+	 */
 	@NotNull
-	private String employeeName;
+	private String nickname;
+	//真实姓名
+	@NotNull
+	private String realname;
+	//电话
+	@NotNull
+	private String phoneNumber;
+	//密码
 	@NotNull
 	private String password;
 	@NotNull
@@ -44,15 +53,24 @@ public class Employee implements Serializable{
 	 * 是关联咖啡机的编号还是咖啡机的所有信息？？？？？
 	 */
 //	@OneToMany(mappedBy = "machineCode")
-	@NotNull
+//	@NotNull
 	@ElementCollection
-	@Column(name = "venderName")
-	private Set<String> venderNames;
-	public String getEmployeeCode() {
-		return employeeCode;
+	private Map<String, Integer> machines;
+	//公司名称
+	private String company = "杭州米修斯科技有限公司";
+	//头像图片地址
+	private String photo;
+	public String getWorkerId() {
+		return workerId;
 	}
-	public String getEmployeeName() {
-		return employeeName;
+	public String getNickname() {
+		return nickname;
+	}
+	public String getRealname() {
+		return realname;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 	public String getPassword() {
 		return password;
@@ -60,11 +78,20 @@ public class Employee implements Serializable{
 	public Date getJoinTime() {
 		return joinTime;
 	}
-	public void setEmployeeCode(String employeeCode) {
-		this.employeeCode = employeeCode;
+	public String getCompany() {
+		return company;
 	}
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
+	public void setWorkerId(String workerId) {
+		this.workerId = workerId;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	public void setPassword(String password) {
 		this.password = password;
@@ -72,21 +99,36 @@ public class Employee implements Serializable{
 	public void setJoinTime(Date joinTime) {
 		this.joinTime = joinTime;
 	}
-	public Set<String> getVenderNames() {
-		return venderNames;
+	public void setCompany(String company) {
+		this.company = company;
 	}
-	public void setVenderNames(Set<String> venderNames) {
-		this.venderNames = venderNames;
+	
+	
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	public Map<String, Integer> getMachines() {
+		return machines;
+	}
+	public void setMachines(Map<String, Integer> machines) {
+		this.machines = machines;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((employeeCode == null) ? 0 : employeeCode.hashCode());
-		result = prime * result + ((employeeName == null) ? 0 : employeeName.hashCode());
+		result = prime * result + ((company == null) ? 0 : company.hashCode());
 		result = prime * result + ((joinTime == null) ? 0 : joinTime.hashCode());
+		result = prime * result + ((machines == null) ? 0 : machines.hashCode());
+		result = prime * result + ((nickname == null) ? 0 : nickname.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((venderNames == null) ? 0 : venderNames.hashCode());
+		result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+		result = prime * result + ((photo == null) ? 0 : photo.hashCode());
+		result = prime * result + ((realname == null) ? 0 : realname.hashCode());
+		result = prime * result + ((workerId == null) ? 0 : workerId.hashCode());
 		return result;
 	}
 	@Override
@@ -98,40 +140,59 @@ public class Employee implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Employee other = (Employee) obj;
-		if (employeeCode == null) {
-			if (other.employeeCode != null)
+		if (company == null) {
+			if (other.company != null)
 				return false;
-		} else if (!employeeCode.equals(other.employeeCode))
-			return false;
-		if (employeeName == null) {
-			if (other.employeeName != null)
-				return false;
-		} else if (!employeeName.equals(other.employeeName))
+		} else if (!company.equals(other.company))
 			return false;
 		if (joinTime == null) {
 			if (other.joinTime != null)
 				return false;
 		} else if (!joinTime.equals(other.joinTime))
 			return false;
+		if (machines == null) {
+			if (other.machines != null)
+				return false;
+		} else if (!machines.equals(other.machines))
+			return false;
+		if (nickname == null) {
+			if (other.nickname != null)
+				return false;
+		} else if (!nickname.equals(other.nickname))
+			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (venderNames == null) {
-			if (other.venderNames != null)
+		if (phoneNumber == null) {
+			if (other.phoneNumber != null)
 				return false;
-		} else if (!venderNames.equals(other.venderNames))
+		} else if (!phoneNumber.equals(other.phoneNumber))
+			return false;
+		if (photo == null) {
+			if (other.photo != null)
+				return false;
+		} else if (!photo.equals(other.photo))
+			return false;
+		if (realname == null) {
+			if (other.realname != null)
+				return false;
+		} else if (!realname.equals(other.realname))
+			return false;
+		if (workerId == null) {
+			if (other.workerId != null)
+				return false;
+		} else if (!workerId.equals(other.workerId))
 			return false;
 		return true;
 	}
 	@Override
 	public String toString() {
-		return "Employee [employeeCode=" + employeeCode + ", employeeName=" + employeeName
-				+ ", password=" + password + ", joinTime=" + joinTime + ", venderNames=" + venderNames + "]";
+		return "Employee [workerId=" + workerId + ", nickname=" + nickname + ", realname=" + realname + ", phoneNumber="
+				+ phoneNumber + ", password=" + password + ", joinTime=" + joinTime + ", machines=" + machines
+				+ ", company=" + company + ", photo=" + photo + "]";
 	}
-	
-	//TODO 运维人员的其他基本信息待定
 	
 	
 }

@@ -13,6 +13,9 @@ public interface CoffeeMachineService {
 	public List<CoffeeMachine> machineForEmployee(String employeeCode);
 	//查询所有咖啡机的信息
 	public List<CoffeeMachine> getAllCoffeeMachine();
+	
+	//查询所有咖啡机的信息
+	public List<CoffeeMachine> getAllNoEmployee();
 	//添加咖啡机
 	public CoffeeMachine addCoffeeMachine(CoffeeMachine coffeeMachine);
 	//批量查询咖啡机

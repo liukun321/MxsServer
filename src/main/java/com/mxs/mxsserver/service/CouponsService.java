@@ -6,4 +6,6 @@ public interface CouponsService {
 	Coupons queryCouponsByCode(String couponCode);
 	
 	Coupons addCoupons(Coupons coupons);
+	
+	Coupons updateCoupons(Coupons coupons);
 }

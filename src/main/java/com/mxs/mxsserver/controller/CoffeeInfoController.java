@@ -32,7 +32,7 @@ public class CoffeeInfoController {
 		CoffeeInfo coffeeInfo = new CoffeeInfo();
 		BeanUtils.copyProperties(coffeeInfoVo, coffeeInfo);
 		Integer coffeeId = GenerateUniqueId.generateCoffeeId();
-		coffeeInfo.setCoffeeId(coffeeId);
+		coffeeInfo.setCoffeeId(coffeeId.toString());
 		CoffeeInfo c = coffeeInfoService.addCoffeeInfo(coffeeInfo);
 		if(null ==  c) {
 			return ResultBean.error(MxsConstants.CODE1, "Add coffeeInfo failure");

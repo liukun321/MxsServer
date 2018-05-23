@@ -48,40 +48,41 @@ public class GetCoffeeRequestHandler extends RequestHandler {
 		log.info("22222-----查询咖啡的所有产信息");
 		GetCoffeeResponce getCoffeeResponce = new GetCoffeeResponce(request.getLinkFrame().key);
 		List<CoffeeInfo> coffeeInfoList = coffeeInfoService.queryAllCoffeeInfo();
-		List<Coffee> coffeelists = new ArrayList();
+//		List<Coffee> coffeelists = new ArrayList();
 		if(null != coffeeInfoList && !coffeeInfoList.isEmpty()) {
 			getCoffeeResponce.setarraylen(coffeeInfoList.size());
-			for (CoffeeInfo coffeeInfo : coffeeInfoList) {
-				Coffee cc = new Coffee();
-				coffeelists.add(cc);
-				BeanUtils.copyProperties(coffeeInfo, cc);
-			}
-			log.info(coffeelists.toString());
-			for (int i = 0; i < coffeelists.size(); i++) {
+//			for (CoffeeInfo coffeeInfo : coffeeInfoList) {
+//				Coffee cc = new Coffee();
+//				coffeelists.add(cc);
+//				BeanUtils.copyProperties(coffeeInfo, cc);
+//			}
+			log.info(coffeeInfoList.toString());
+			for (int i = 0; i < coffeeInfoList.size(); i++) {
 				Property property = new Property();
 				
-				property.putInteger(1, coffeelists.get(i).getCoffeeId());
-				property.put(2, coffeelists.get(i).getCoffeeName());
-				property.put(3, Double.toString(coffeelists.get(i).getPrice()));
-//			property.put(4, Double.toString(coffeelists.get(i).getDiscount()));
-				property.put(4, coffeelists.get(i).getImgurl());
-				log.info("图片地址：" + coffeelists.get(i).getImgurl());
+				property.put(1, coffeeInfoList.get(i).getCoffeeId());
+				property.put(2, coffeeInfoList.get(i).getCoffeeName());
+				property.put(3, Double.toString(coffeeInfoList.get(i).getPrice()));
+				property.put(4, coffeeInfoList.get(i).getImgurl());
+				log.info("图片地址：" + coffeeInfoList.get(i).getImgurl());
 				//咖啡的糖度 信息
-				property.put(5, Boolean.toString(coffeelists.get(i).getIsSugar()));
-				property.put(6, Boolean.toString(coffeelists.get(i).getIs_new()));
-				property.put(7, Boolean.toString(coffeelists.get(i).getIs_hot()));
+				property.put(5, Boolean.toString(coffeeInfoList.get(i).getIsSugar()));
+				property.put(6, Boolean.toString(coffeeInfoList.get(i).getIs_new()));
+				property.put(7, Boolean.toString(coffeeInfoList.get(i).getIs_hot()));
+				property.put(8, Boolean.toString(coffeeInfoList.get(i).getDiscount()));
+				property.put(9, Double.toString(coffeeInfoList.get(i).getDiscount_price()));
 				getCoffeeResponce.getCoffeeInfos().list.add(property);
 				
 			}
 			//获取咖啡机的折扣信息
-			DiscountInfo result = discountInfoService.queryDiscountInfo(request.getLinkFrame().key);
-			JSONObject jsonObj = new JSONObject();
-			if(null != result) {
-				jsonObj.put("discount", result.getDiscount());
-			}else {
-				jsonObj.put("discount", null);
-			}
-			getCoffeeResponce.setFavorable(jsonObj.toString());
+//			DiscountInfo result = discountInfoService.queryDiscountInfo(request.getLinkFrame().key);
+//			JSONObject jsonObj = new JSONObject();
+//			if(null != result) {
+//				jsonObj.put("discount", result.getDiscount());
+//			}else {
+//				jsonObj.put("discount", null);
+//			}
+//			getCoffeeResponce.setFavorable(jsonObj.toString());
 			
 			System.out.println("getcoffeeinfo");
 			getCoffeeResponce.getLinkFrame().serialId = request.getLinkFrame().serialId;

@@ -25,13 +25,15 @@ public class CoffeeInfoServiceTest {
 	public void addCoffeeMachineTest() {
 		
 		CoffeeInfo coffeeInfo = new CoffeeInfo();
-		coffeeInfo.setCoffeeId(101);
+		coffeeInfo.setCoffeeId("101");
 		coffeeInfo.setCoffeeName("美式");
 		coffeeInfo.setImgurl("http://mixiusi.com.cn/prod_introduce/coffee/卡其经典拿铁.png");
 		coffeeInfo.setIs_hot(true);
 		coffeeInfo.setIs_new(true);
 		coffeeInfo.setIsSugar(false);
 		coffeeInfo.setPrice(16.00);
+		coffeeInfo.setDiscount(false);
+		coffeeInfo.setDiscount_price(16.00);
 		CoffeeInfo cm = coffeeInfoService.addCoffeeInfo(coffeeInfo);
 		System.out.println(cm.toString());
 	}

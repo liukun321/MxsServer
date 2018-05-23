@@ -2,7 +2,6 @@ package com.mxs.mxsserver.handler.coffee;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -12,9 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePayResponse;
@@ -24,6 +20,7 @@ import com.mxs.mxsserver.protocol.request.Request;
 import com.mxs.mxsserver.protocol.request.coffee.PayBarCodeRequest;
 import com.mxs.mxsserver.protocol.responce.coffee.PayBarCodeResponce;
 import com.mxs.mxsserver.service.CoffeeInfoService;
+import com.mxs.mxsserver.service.CouponsService;
 import com.mxs.mxsserver.service.PayindentService;
 import com.mxs.mxsserver.util.AlipayUtils;
 import com.mxs.mxsserver.util.DateUtils;
@@ -48,30 +45,27 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 	@Autowired
 	private CoffeeInfoService service;
 	@Autowired
+	private CouponsService cservice;
+	@Autowired
 	private PayindentService pservice;
 	private static CoffeeInfoService coffeeInfoService;
 	private static PayindentService payindentService;
+	private static CouponsService couponsService;
 	@PostConstruct
 	public void init() {
 		coffeeInfoService = service;
 		payindentService = pservice;
+		couponsService = cservice;
 	}
 		
 	@Override
 	public void processRequest(Request request, ChannelHandlerContext ctx) {
 		boolean flag = true;//用于标识付款过程中的异常情况，终止支付请求
 		PayBarCodeRequest payBarCodeRequest = (PayBarCodeRequest) request;
+		
+		boolean tradeStatus = false;
+		
 		log.info("----开始支付----");
-//		JSONArray array = JSON.parseArray(payBarCodeRequest.getCoffeeIndents());
-//		JSONObject indent = new JSONObject();
-//		log.info(array.toJSONString());
-////		for (int i = 0; i < array.size(); i++) {
-//		indent = array.getJSONObject(0);
-//		int coffeeid = indent.getInteger("goodsid");
-//		//获取咖啡的制作流程没有用途
-//		//统计购物车中的所有商品的总价
-//		double totalprice = coffeeInfoService.queryCoffeeInfoForPrice(coffeeid);
-//		}
 		//TODO 参数验证
 		String coffeeid = payBarCodeRequest.getCoffeeId();
 		String ip = payBarCodeRequest.getIp();
@@ -80,6 +74,7 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 			discount = "0.0";
 		}
 		String auth_code = payBarCodeRequest.getAuthCode();
+//		String auth_code = "135179978859858706";
 		String venderName = payBarCodeRequest.getMachineId();
 		int payMethod = 0;
 		Double price = 0.0, reduce_price = 0.0;
@@ -104,7 +99,7 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 				if (!StringUtils.isNull(price)) {
 					reduce_price = price - Double.valueOf(discount);
 					if (reduce_price < 0) {//当优惠后的价格小于零后，设置为0
-						reduce_price = 0.0;
+						reduce_price = 0.1;
 					}
 				}else {
 					//TODO 购买取消
@@ -124,7 +119,7 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 			payindent = new Payindent();
 			payindent.setIndentId(indent_id);
 			payindent.setMachineId(venderName);
-			payindent.setCoffeeindent(coffeeid);
+			payindent.setCoffeeId(coffeeid);
 			payindent.setPrice(reduce_price);
 			payindent.setPriceOri(price);
 			payindent.setPayMethod(payMethod);
@@ -140,21 +135,18 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 		payBarCodeResponce.setPayIndent(indent_id);
 		payBarCodeResponce.setPrice(Double.toString(reduce_price));
 		
-		if (1 == payMethod && flag) {
+ 		if (1 == payMethod && flag) {
 			//支付宝支付
 			String tradeNo = "";
 			try {
-				AlipayTradePayResponse alipayTradePayResponse = AlipayUtils.alipayByBarCode(indent_id, auth_code, 0.01);
+				AlipayTradePayResponse alipayTradePayResponse = AlipayUtils.alipayByBarCode(indent_id, auth_code, reduce_price);
 				tradeNo = alipayTradePayResponse.getTradeNo();//支付宝返回的交易号
 				payindent.setOrderId(tradeNo);
 				//支付成功
 				log.info("支付宝返回的交易号:" + tradeNo);
 				if ("10000".equals(alipayTradePayResponse.getCode())) {
 					//更新支付状态
-					paySuccess(payindent, payBarCodeResponce);
-				}else {
-					//支付失败,支付宝系统会自动关闭交易，订单状态更新
-					payFailure(payindent, payBarCodeResponce);	
+					tradeStatus = true;
 				}
 			} catch (AlipayApiException e) {
 				log.error("支付异常，取消订单：" + e.getErrMsg());
@@ -165,23 +157,24 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 					} else {
 						log.info("AlipayTradeCancel--调用失败");
 					}
-					payFailure(payindent, payBarCodeResponce);
 				} catch (AlipayApiException e1) {
 					log.error("订单取消异常：" + e1.getErrMsg());
-					payFailure(payindent, payBarCodeResponce);
 				}
 			}
 			
 		}else if (2 == payMethod && flag) {
 			// TODO 微信支付 微信支付中返回结果中又return_code：表示请求成功 和 result_code：表示请求执行成功
 			//总价的单位时元，传入微信接口时需要转换为分  body字段的定义
+			String value = StringUtils.convertDoubleToStr(reduce_price);
 			try {
 				Map<String, String> resultMap = WechatPayUtils.payByWechat(indent_id, auth_code,
-						"1", ip);//Double.toString(reduce_price).replaceAll(".", "")
+						value, ip);//Double.toString(reduce_price*100).replaceAll(".", "")
 				String result_code = resultMap.get("result_code");
 				String return_code = resultMap.get("return_code");
+				String err_code = resultMap.get("err_code");
 				String transaction_id = resultMap.get("resultMap");//获取微信支付订单号
 				payindent.setOrderId(transaction_id);
+				log.info("return_code=" + return_code + "--err_code = " + err_code + "--result_code= " + result_code);
 				//
 				if ("SUCCESS".equals(return_code)){//请求成功
 					//返回给APP，订单是待支付状态
@@ -189,9 +182,9 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 					log.info("----------------微信支付请求成功----------------" + resultMap.toString());
 					if ("SUCCESS".equals(result_code)) {//支付成功
 						log.info("----------------微信支付扣款成功----------------");
-						paySuccess(payindent, payBarCodeResponce);
+						tradeStatus = true;
 					}
-					if ("USERPAYING".equals(result_code)){
+					if ("USERPAYING".equals(err_code)){
 						//用户正在支付中，等待10秒钟后再查询订单详情
 						String query_result = "";
 						for(int i=0; i < 3; i++) {
@@ -200,53 +193,48 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 							Map<String, String> queryMap = WechatPayUtils.queryOrder(indent_id);
 							String queryCode = queryMap.get("result_code");
 							query_result = queryMap.get("return_code");
-							if("SUCCESS".equals(queryCode)) {
-								if("SUCCESS".equals(query_result)) {
-									paySuccess(payindent, payBarCodeResponce);
-									break;
-								}
+							if("SUCCESS".equals(queryCode) && "SUCCESS".equals(query_result)) {
+								tradeStatus = true;
+								break;
 							}
 						}
 						//三次结束之后还是失败
 						if(!"SUCCESS".equals(query_result)) {
 							log.info("----------------微信支付扣款成功失败----------------");
-							payFailure(payindent, payBarCodeResponce);
 						}
 						//超时后系统会自动取消订单？？？
 					}
-					if("SYSTEMERROR".equals(result_code)) {//NOTENOUGH：余额不足
+					if("SYSTEMERROR".equals(err_code)) {//NOTENOUGH：余额不足
 						//系统错误则，查询订单，返回订单的实际结果
 						Thread.sleep(5000);
 						Map<String, String> queryMap = WechatPayUtils.queryOrder(indent_id);
 						String queryCode = queryMap.get("result_code");
 						String query_result = queryMap.get("return_code");
-						if("SUCCESS".equals(queryCode)) {
-							if("SUCCESS".equals(query_result)) {
-								paySuccess(payindent, payBarCodeResponce);
-							}else {
-								payFailure(payindent, payBarCodeResponce);
-							}
+						if("SUCCESS".equals(queryCode) && "SUCCESS".equals(query_result)) {
+							tradeStatus = true;
 						}
 					}
-				}else{
-					//支付请求失败
-					log.info("----------------微信支付扣款失败----------------");
-					payFailure(payindent, payBarCodeResponce);
 				}
 			} catch (Exception e) {
 				log.error("微信支付过程异常：" + e.getMessage());
-				payFailure(payindent, payBarCodeResponce);
 			}
 		}else {
 			log.info("支付方式枚举值传递有误：{}", payMethod);
-			payFailure(payindent, payBarCodeResponce);
 		}
 		//TODO 支付失败，订单详情需要入库？？
+		
+//		tradeStatus = true;
+		log.info("----22222----" + tradeStatus);
+		if(tradeStatus) {
+			paySuccess(payindent, payBarCodeResponce);
+		}else {
+			payFailure(payindent, payBarCodeResponce);
+		}
 		ctx.getChannel().write(payBarCodeResponce);//反馈给APP
 		payindentService.addPayindent(payindent);//更新订单状态
 	}
 	/**
-	 * 支付成功
+	 * 支付失败
 	 * @param pay
 	 * @param payBarCodeResponce
 	 */
@@ -256,14 +244,14 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 		payBarCodeResponce.getLinkFrame().resCode = 500;
 	}
 	/**
-	 * 支付失败
+	 * 支付成功
 	 * @param pay
 	 * @param payBarCodeResponce
 	 */
 	private void paySuccess(Payindent pay, PayBarCodeResponce payBarCodeResponce) {
+		
 		pay.setPayStatus(1);
 		payBarCodeResponce.setStatus("1");
 		payBarCodeResponce.getLinkFrame().resCode = 200;
 	}
-	
 }

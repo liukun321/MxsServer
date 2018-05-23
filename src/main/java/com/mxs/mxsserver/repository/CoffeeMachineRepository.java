@@ -14,4 +14,6 @@ public interface CoffeeMachineRepository extends JpaRepository<CoffeeMachine, St
 
 	List<CoffeeMachine> findByEmployeeCode(String employeeCode);
 
+	List<CoffeeMachine> findByEmployeeCodeIsNull();
+
 }

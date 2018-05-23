@@ -65,9 +65,9 @@ public class WechatPayUtils {
 		Map<String, String> resultMap = null;
 		MyConfig config = new MyConfig();
 		WXPay wxpay = new WXPay(config);
-		String wxindent_id = cut(indent_id);
+//		String wxindent_id = cut(indent_id);
 		Map<String, String> data = new HashMap();
-		data.put("out_trade_no", wxindent_id);//商户系统内部订单号
+		data.put("out_trade_no", indent_id);//商户系统内部订单号
 		
 		//将config中的参数加载到data中
 		wxpay.fillRequestData(data);
@@ -174,7 +174,7 @@ public class WechatPayUtils {
 		
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String time = DateUtils.dateFormat("yyyyMMddHHmmss");
 		System.out.println(time);
 		 try {
@@ -191,5 +191,5 @@ public class WechatPayUtils {
 			// TODO Auto-generated catch block
 			log.error(e.getMessage());
 		}
-	}
+	}*/
 }

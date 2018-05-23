@@ -79,5 +79,13 @@ public class CoffeeMachineServiceImpl implements CoffeeMachineService{
 		//2 刷新后一次两所有的实例保存到数据库中 
 		entityManager.flush();
 	}
+	/**
+	 * 查找所有没有绑定运营人员的咖啡机
+	 */
+	@Override
+	public List<CoffeeMachine> getAllNoEmployee() {
+		List<CoffeeMachine> list = coffeeMachineRepository.findByEmployeeCodeIsNull();
+		return list;
+	}
 	
 }

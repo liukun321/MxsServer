@@ -7,7 +7,7 @@ import com.mxs.mxsserver.protocol.request.Request;
 import com.mxs.mxsserver.protocol.request.coffee.AppDownloadRequest;
 import com.mxs.mxsserver.protocol.responce.coffee.AppDownloadResponce;
 
-//��ȡapp����url���ɸ�Ϊ΢�ŷ���ŵĶ�ά����Ϣ
+//下载APP
 public class AppDownloadRequestHandler extends RequestHandler {
 
 	@Override

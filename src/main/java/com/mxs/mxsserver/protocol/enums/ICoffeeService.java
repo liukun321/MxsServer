@@ -51,6 +51,8 @@ public interface ICoffeeService {
 		public static final short GET_COUPONS = 30;
 		
 		public static final short UPDATE_MACHINE_ADDRESS = 31;
+		
+		public static final short ALARM_MATERIAL = 32;
     }
 	
 	public interface CoffeeType {

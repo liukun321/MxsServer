@@ -33,27 +33,29 @@ public class CoffeeMachine implements Serializable{
 	@Id
 	@Column(length = 100)
 	private String machineId;
-//	@NotNull
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer number;
+	/**
+	 * 咖啡机类型/0初代机、1二代机
+	 */
+	@NotNull
+	private Integer type;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date downTime;
+	/**
+	 * 咖啡机编号，标明初代机和二代机的编号
+	 */
+	@NotNull
+	private String machineCode;
 	
-	private String machineInfo;
 	/**
 	 * 咖啡机的状态
-	 * 0:闲置状态；
-	  * 1：清洗阶段；
-	  * 2：清洗完成；
-	  * 3：缺料状态；
-	  * 4：填料完成；
-	  * 5：填料未完成；
-	  * 6：支付阶段
-	  * 7：支付成功
-	  * 8：支付失败
-	  * 9：二维码传输
-	  * 10：磨豆机启动
-	  * 11：冲泡状态
-	  * 12：加粉料状态
-	  * 13：加辅料状态
+	 * int SYS_STATUS_INIT = 100;
+	 * int SYS_STATUS_DEBUG = 200;
+	 * int SYS_STATUS_WAIT = 300;
+	 * int SYS_STATUS_WASH = 400;
+	 * int SYS_STATUS_LOAD = 500;
+	 * int SYS_STATUS_PAY = 600;
+	 * int SYS_STATUS_WORK = 700;
 	 * 
 	 */
 	@NotNull
@@ -84,15 +86,6 @@ public class CoffeeMachine implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date repaireTime;
 	/**
-	 * 物料信息
-	 */
-//	@ManyToMany
-//	@JoinTable(joinColumns = { @JoinColumn(name = "coffee_machineCode") }, inverseJoinColumns = {
-//            @JoinColumn(name = "material_category") }) //被控方表字段名
-//	@ElementCollection
-//	@NotNull
-//	private List<Material> stackBoxes;
-	/**
 	 * 咖啡机负责的运维人员编号,在创建时允许为空
 	 */
 //	@ManyToOne(optional = false)
@@ -100,11 +93,8 @@ public class CoffeeMachine implements Serializable{
 	public String getMachineId() {
 		return machineId;
 	}
-	public Integer getNumber() {
-		return number;
-	}
-	public String getMachineInfo() {
-		return machineInfo;
+	public Integer getType() {
+		return type;
 	}
 	public Integer getStatus() {
 		return status;
@@ -127,11 +117,8 @@ public class CoffeeMachine implements Serializable{
 	public void setMachineId(String machineId) {
 		this.machineId = machineId;
 	}
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-	public void setMachineInfo(String machineInfo) {
-		this.machineInfo = machineInfo;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	public void setStatus(Integer status) {
 		this.status = status;
@@ -151,18 +138,33 @@ public class CoffeeMachine implements Serializable{
 	public void setEmployeeCode(String employeeCode) {
 		this.employeeCode = employeeCode;
 	}
+	
+	public String getMachineCode() {
+		return machineCode;
+	}
+	public void setMachineCode(String machineCode) {
+		this.machineCode = machineCode;
+	}
+	
+	public Date getDownTime() {
+		return downTime;
+	}
+	public void setDownTime(Date downTime) {
+		this.downTime = downTime;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
+		result = prime * result + ((downTime == null) ? 0 : downTime.hashCode());
 		result = prime * result + ((employeeCode == null) ? 0 : employeeCode.hashCode());
 		result = prime * result + ((is_running == null) ? 0 : is_running.hashCode());
+		result = prime * result + ((machineCode == null) ? 0 : machineCode.hashCode());
 		result = prime * result + ((machineId == null) ? 0 : machineId.hashCode());
-		result = prime * result + ((machineInfo == null) ? 0 : machineInfo.hashCode());
-		result = prime * result + ((number == null) ? 0 : number.hashCode());
 		result = prime * result + ((repaireTime == null) ? 0 : repaireTime.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		result = prime * result + ((updateTime == null) ? 0 : updateTime.hashCode());
 		return result;
 	}
@@ -180,6 +182,11 @@ public class CoffeeMachine implements Serializable{
 				return false;
 		} else if (!createTime.equals(other.createTime))
 			return false;
+		if (downTime == null) {
+			if (other.downTime != null)
+				return false;
+		} else if (!downTime.equals(other.downTime))
+			return false;
 		if (employeeCode == null) {
 			if (other.employeeCode != null)
 				return false;
@@ -190,20 +197,15 @@ public class CoffeeMachine implements Serializable{
 				return false;
 		} else if (!is_running.equals(other.is_running))
 			return false;
+		if (machineCode == null) {
+			if (other.machineCode != null)
+				return false;
+		} else if (!machineCode.equals(other.machineCode))
+			return false;
 		if (machineId == null) {
 			if (other.machineId != null)
 				return false;
 		} else if (!machineId.equals(other.machineId))
-			return false;
-		if (machineInfo == null) {
-			if (other.machineInfo != null)
-				return false;
-		} else if (!machineInfo.equals(other.machineInfo))
-			return false;
-		if (number == null) {
-			if (other.number != null)
-				return false;
-		} else if (!number.equals(other.number))
 			return false;
 		if (repaireTime == null) {
 			if (other.repaireTime != null)
@@ -215,6 +217,11 @@ public class CoffeeMachine implements Serializable{
 				return false;
 		} else if (!status.equals(other.status))
 			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
 		if (updateTime == null) {
 			if (other.updateTime != null)
 				return false;
@@ -224,9 +231,10 @@ public class CoffeeMachine implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "CoffeeMachine [machineId=" + machineId + ", number=" + number + ", machineInfo=" + machineInfo
-				+ ", status=" + status + ", is_running=" + is_running + ", createTime=" + createTime + ", updateTime="
-				+ updateTime + ", repaireTime=" + repaireTime + ", employeeCode=" + employeeCode + "]";
+		return "CoffeeMachine [machineId=" + machineId + ", type=" + type + ", downTime=" + downTime + ", machineCode="
+				+ machineCode + ", status=" + status + ", is_running=" + is_running + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", repaireTime=" + repaireTime + ", employeeCode=" + employeeCode
+				+ "]";
 	}
 	
 	

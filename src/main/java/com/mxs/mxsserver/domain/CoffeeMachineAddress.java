@@ -27,6 +27,9 @@ public class CoffeeMachineAddress implements Serializable{
     //经度
 	@NotNull
     private double longitude;
+	//所在城市
+	@NotNull
+	private String city;
 	public String getMachineId() {
 		return machineId;
 	}
@@ -41,6 +44,9 @@ public class CoffeeMachineAddress implements Serializable{
 	}
 	public double getLongitude() {
 		return longitude;
+	}
+	public String getCity() {
+		return city;
 	}
 	public void setMachineId(String machineId) {
 		this.machineId = machineId;
@@ -57,11 +63,15 @@ public class CoffeeMachineAddress implements Serializable{
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((city == null) ? 0 : city.hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(latitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -85,6 +95,11 @@ public class CoffeeMachineAddress implements Serializable{
 				return false;
 		} else if (!address.equals(other.address))
 			return false;
+		if (city == null) {
+			if (other.city != null)
+				return false;
+		} else if (!city.equals(other.city))
+			return false;
 		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
 			return false;
 		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
@@ -101,8 +116,8 @@ public class CoffeeMachineAddress implements Serializable{
 	@Override
 	public String toString() {
 		return "CoffeeMachineAddress [machineId=" + machineId + ", time=" + time + ", address=" + address
-				+ ", latitude=" + latitude + ", longitude=" + longitude + "]";
+				+ ", latitude=" + latitude + ", longitude=" + longitude + ", city=" + city + "]";
 	}
-    
-    
+	
+	
 }

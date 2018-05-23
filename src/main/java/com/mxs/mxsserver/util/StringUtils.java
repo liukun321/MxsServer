@@ -169,6 +169,18 @@ public class StringUtils
             return null;  
         return str.replaceAll("("+trim+")+$", "");  
     }  
+    /**
+     * 将Double类型的数值转换为String类型，单位元转换为分
+     * @param value
+     * @return
+     */
+    public static String convertDoubleToStr(Double value) {
+    	if(null == value)
+    		return null;
+    	String s = Double.toString(value*100);
+		String a = s.substring(0, s.lastIndexOf("."));
+		return a;
+    }
     
     /**
      * 格式化输出json
