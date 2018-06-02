@@ -1,8 +1,8 @@
 package com.mxs.mxsserver.service;
-
 /**
  * 此接口为极光推送的实现，用于对商户app的推送
- * @author chenfei
+ * @author liukun
+ *
  */
 public interface JPushService {
 	

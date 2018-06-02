@@ -1,14 +1,11 @@
 package com.mxs.mxsserver.controller;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mxs.mxsserver.domain.CoffeeMachine;
 import com.mxs.mxsserver.domain.ResultBean;
 import com.mxs.mxsserver.service.CoffeeMachineService;
-import com.mxs.mxsserver.util.GenerateUniqueId;
 import com.mxs.mxsserver.util.MxsConstants;
-import com.mxs.mxsserver.vo.CoffeeMachineVo;
 
 /**
  *咖啡机查询 

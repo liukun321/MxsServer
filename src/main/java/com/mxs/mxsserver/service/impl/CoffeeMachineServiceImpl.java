@@ -42,7 +42,6 @@ public class CoffeeMachineServiceImpl implements CoffeeMachineService{
 	@Override
 	public List<CoffeeMachine> machineForEmployee(String employeeCode) {
 		return coffeeMachineRepository.findByEmployeeCode(employeeCode);
-//		return null;
 	}
 
 	@Override
@@ -78,6 +77,7 @@ public class CoffeeMachineServiceImpl implements CoffeeMachineService{
 		}
 		//2 刷新后一次两所有的实例保存到数据库中 
 		entityManager.flush();
+		entityManager.clear();
 	}
 	/**
 	 * 查找所有没有绑定运营人员的咖啡机

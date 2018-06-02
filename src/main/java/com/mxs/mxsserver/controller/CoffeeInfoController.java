@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/material")
+@RequestMapping("/coffeeInfo")
 public class CoffeeInfoController {
 	private final Logger log = LoggerFactory.getLogger(CoffeeInfoController.class);
 	@Autowired

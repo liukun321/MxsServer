@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mxs.mxsserver.handler.coffee.MachineStatusReportRequestHandler;
 import com.mxs.mxsserver.protocol.request.LoginRequest;
 import com.mxs.mxsserver.protocol.request.Request;
 import com.mxs.mxsserver.protocol.responce.LoginResponce;
@@ -23,12 +22,14 @@ public class LoginRequestHandler extends RequestHandler {
 	@Autowired
 	private LoginInfoService loginService;
 	private static LoginInfoService loginInfoService;
+	
 	@PostConstruct
 	public void init() {
 		loginInfoService = loginService;
 	}
 	@Override
 	public void processRequest(Request request, ChannelHandlerContext ctx) {
+		log.info("---------------登陆请求-----------------");
 		short status = 0;
 		// core.cancelRequestRetryTimer(request.getLinkFrame().serialId);
 		LoginRequest loginRequest = (LoginRequest) request;
@@ -39,7 +40,7 @@ public class LoginRequestHandler extends RequestHandler {
 		/* System.out.println(MD5.md5(loginRequest.getPassword())); */
 		Login result = loginInfoService.queryUserInfo(userName, password);
 		log.info(loginRequest.getUid() + "----"+loginRequest.getPassword());
-		log.info(result + "----1234556789");
+		log.info("------登陆状态-----" + result);
 		if (result == Login.USER_NOT_EXIST) {
 			loginResponce.getLinkFrame().resCode = ResponseCode.RES_ENONEXIST;
 		} else if (result == Login.PASSWORD_ERROR) {

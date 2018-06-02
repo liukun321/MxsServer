@@ -49,6 +49,8 @@ public class CoffeeMachine implements Serializable{
 	
 	/**
 	 * 咖啡机的状态
+	 * 1 普通预警
+	 * 2 严重预警
 	 * int SYS_STATUS_INIT = 100;
 	 * int SYS_STATUS_DEBUG = 200;
 	 * int SYS_STATUS_WAIT = 300;

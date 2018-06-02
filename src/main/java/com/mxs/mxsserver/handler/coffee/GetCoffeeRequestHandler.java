@@ -45,7 +45,7 @@ public class GetCoffeeRequestHandler extends RequestHandler {
 	
 	@Override
 	public void processRequest(Request request, ChannelHandlerContext ctx) {
-		log.info("22222-----查询咖啡的所有产信息");
+		log.info("----------查询咖啡的所有产信息--------------------");
 		GetCoffeeResponce getCoffeeResponce = new GetCoffeeResponce(request.getLinkFrame().key);
 		List<CoffeeInfo> coffeeInfoList = coffeeInfoService.queryAllCoffeeInfo();
 //		List<Coffee> coffeelists = new ArrayList();
@@ -75,14 +75,14 @@ public class GetCoffeeRequestHandler extends RequestHandler {
 				
 			}
 			//获取咖啡机的折扣信息
-//			DiscountInfo result = discountInfoService.queryDiscountInfo(request.getLinkFrame().key);
-//			JSONObject jsonObj = new JSONObject();
-//			if(null != result) {
-//				jsonObj.put("discount", result.getDiscount());
-//			}else {
-//				jsonObj.put("discount", null);
-//			}
-//			getCoffeeResponce.setFavorable(jsonObj.toString());
+			DiscountInfo result = discountInfoService.queryDiscountInfo(request.getLinkFrame().key);
+			JSONObject jsonObj = new JSONObject();
+			if(null != result) {
+				jsonObj.put("discount", result.getDiscount());
+			}else {
+				jsonObj.put("discount", null);
+			}
+			getCoffeeResponce.setFavorable(jsonObj.toString());
 			
 			System.out.println("getcoffeeinfo");
 			getCoffeeResponce.getLinkFrame().serialId = request.getLinkFrame().serialId;

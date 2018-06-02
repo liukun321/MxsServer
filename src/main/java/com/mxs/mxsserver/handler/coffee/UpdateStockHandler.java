@@ -57,7 +57,7 @@ public class UpdateStockHandler extends RequestHandler {
 		System.out.println(addStockRequest.getLinkFrame().key);
 		material.setMachineId(addStockRequest.getLinkFrame().key);
 		String inventory = addStockRequest.getInventory();
-		Map<String, String> map = JSON.parseObject(inventory, Map.class);
+		Map<String, Integer> map = JSON.parseObject(inventory, Map.class);
 			/*1号咖啡豆盒：正常咖啡豆（缺料预警）
 				2号咖啡豆盒：低因咖啡豆（缺料预警）
 				3号粉料盒：抹茶粉（不作监测）
@@ -70,9 +70,9 @@ public class UpdateStockHandler extends RequestHandler {
 				10号水盒：桶装水（缺料预警）
 				11号：杯子数量*/
 		//{"cupNum":"6","number1":"1","number2":"3","number3":"6","number4":"9","number9":"9","water":"9"}
-		for(Entry<String, String> entry: map.entrySet()){
+		for(Entry<String, Integer> entry: map.entrySet()){
 			String key = entry.getKey();
-			double value = Double.parseDouble(entry.getValue());
+			Integer value = entry.getValue();
 			if ("number1".equals(key))
 				material.setCoffeebean(value);
 			if ("number2".equals(key))

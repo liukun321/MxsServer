@@ -17,11 +17,15 @@ public class AlarmForMaterialResquest extends Request {
 	//物料盒中剩余量
 	@PackIndex(2)
 	private double value;
+	//警报级别
+	@PackIndex(3)
+	private int type;
 	
 	@Override
 	public Unpack unpackBody(Unpack unpack) throws Exception {
 		boxNumber = unpack.popInt();
 		value = unpack.popDouble();
+		type = unpack.popInt();
 		return null;
 	}
 
@@ -39,6 +43,14 @@ public class AlarmForMaterialResquest extends Request {
 
 	public void setValue(double value) {
 		this.value = value;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }

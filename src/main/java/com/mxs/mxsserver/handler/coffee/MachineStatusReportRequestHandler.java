@@ -1,6 +1,7 @@
 package com.mxs.mxsserver.handler.coffee;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -26,7 +27,9 @@ import com.mxs.mxsserver.util.DateUtils;
 /**
  * 11 咖啡机状态报告
  * @author liukun
- *初始化咖啡机的状态信息或者更新状态
+ * 初始化咖啡机的状态信息或者更新状态
+ * 错误记录的创建和终止
+ * 
  */
 @Component
 public class MachineStatusReportRequestHandler extends RequestHandler {
@@ -49,7 +52,7 @@ public class MachineStatusReportRequestHandler extends RequestHandler {
 
 	@Override
 	public void processRequest(Request request, ChannelHandlerContext ctx) {
-		// TODO Auto-generated method stub
+		log.info("----------------咖啡机状态报告信息---------------------");
 		MachineStatusReportRequest machineStatusReportRequest = (MachineStatusReportRequest) request;
 		System.out.println(machineStatusReportRequest.getMachineStatusJson());
 		System.out.println(machineStatusReportRequest.getTimestamp());
@@ -62,40 +65,31 @@ public class MachineStatusReportRequestHandler extends RequestHandler {
 		boolean isrun = machineStatusReportRequest.isIs_running();
 		String workerId = machineInfo.getEmployeeCode();
 		
-		if(null == machineInfo) {
-			//初始化咖啡机信息
-			machineInfo = new CoffeeMachine();
-			machineInfo.setMachineId(venderName);
-//			machineInfo.setMachineInfo(machineStatusReportRequest.getMachineStatusJson());
-			machineInfo.setCreateTime(new Date());
-//			machineInfo.setIs_running(machineStatusReportRequest.isIs_running());
-//			machineInfo.setUpdateTime(new Date());
-		}else {
-			ErrorRecord error = null;
-			if(!machineInfo.getIs_running() && isrun) {//前一次是停机状态，当前是重启，则计算这次错误的持续的时间
-				//查询上一次的错误记录
-				error = errorRecordService.queryErrorRecord(venderName);
-				if(null != error) {
-					Date start = error.getStartTime();
+		List<ErrorRecord> errors = null;
+		ErrorRecord error = null;
+		if(!machineInfo.getIs_running() && isrun) {//前一次是停机状态，当前是重启，则计算这次错误的持续的时间
+			//查询上一次的错误记录
+			errors = errorRecordService.queryErrorRecord(venderName);
+			if(null != errors && !errors.isEmpty()) {
+				errors.stream().forEach(err -> {
 					Date end = new Date();
-					Long duration = DateUtils.subtractForDate(start, end, 1000*60);//单位是分
-					error.setDurationTime(duration);
-					error.setEndTime(end);
-					error.setSumError(error.getSumError() + 1);//错误总数加一
-				}else {
-					log.info("错误记录数据丢失，找不到前一次的停机记录");
-				}
-				//计算当前时间和上次停机时间的时间差
-			}else if(machineInfo.getIs_running() && !isrun) {//前一次正常，当前是停机，则新建错误记录
-				error = new ErrorRecord();
-				error.setMachineId(venderName);
-				error.setStartTime(new Date());
-				error.setType(2);//停机错误，当前无警报处理
-				error.setWorkerId(workerId);
+					err.setEndTime(end);
+					err.setDurationTime(DateUtils.subtractForDate(err.getStartTime(), end, 1000*60));
+				});
+				errorRecordService.batchUpdate(errors);
+			}else {
+				log.info("错误记录数据丢失，找不到前一次的停机记录");
 			}
-			if(error != null)
-				errorRecordService.addErrorRecord(error);
+			//计算当前时间和上次停机时间的时间差
+		}else if(machineInfo.getIs_running() && !isrun) {//前一次正常，当前是停机，则新建错误记录
+			error = new ErrorRecord();
+			error.setMachineId(venderName);
+			error.setStartTime(new Date());
+			error.setType(2);//停机错误，当前无警报处理
+			error.setWorkerId(workerId);
 		}
+		if(error != null)
+			errorRecordService.addErrorRecord(error);
 		if(!isrun) {//停机，则设置停机的时间
 			machineInfo.setDownTime(new Date());
 		}
@@ -109,9 +103,9 @@ public class MachineStatusReportRequestHandler extends RequestHandler {
 			material = new Material();
 			material.setMachineId(venderName);
 		}
-		// ？？机器状态的json串是否与物料表的字段对应
+		// ？？机器状态的json串是否与物料表的字段对应  相应料盒编号和当前状态
 		material = JSON.parseObject(machineStatusReportRequest.getMachineStatusJson(), Material.class);
-		//更新咖啡机物料信息
+		//TODO　更新咖啡机物料信息
 		materialService.updateMaterial(material);
 		//更新咖啡机状态
 		coffeeMachineService.addCoffeeMachine(machineInfo);

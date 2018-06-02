@@ -32,12 +32,8 @@ public class CoffeeInfoServiceImpl implements CoffeeInfoService {
 
 
 	@Override
-	public Double queryCoffeeInfoForPrice(Integer coffeeId) {
-		CoffeeInfo coffeeInfo = coffeeInfoRepository.findByCoffeeId(coffeeId);
-		if(null != coffeeInfo) {
-			return coffeeInfo.getPrice();
-		}
-		return null;
+	public CoffeeInfo queryCoffeeInfoForPrice(Integer coffeeId) {
+		return coffeeInfoRepository.findByCoffeeId(coffeeId);
 	}
 
 

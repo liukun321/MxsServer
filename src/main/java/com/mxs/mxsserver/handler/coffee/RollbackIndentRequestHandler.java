@@ -43,7 +43,7 @@ public class RollbackIndentRequestHandler extends RequestHandler {
 		int coffeeid = indent.getInteger("goodsid");
 		
 //		double price =  database.Queryprice(coffeeid);
-		double price = coffeeInfoService.queryCoffeeInfoForPrice(coffeeid);
+		double price = coffeeInfoService.queryCoffeeInfoForPrice(coffeeid).getDiscount_price();
 		
 		String indentid = rollbackRequest.getLinkFrame().key + Long.toString(rollbackRequest.getTimestamp());
 		

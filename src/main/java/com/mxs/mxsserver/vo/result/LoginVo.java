@@ -7,6 +7,7 @@ public class LoginVo {
 	private String nickname;
 	private String realname;
 	private String company;
+	private String sessionId;
 	public String getToken() {
 		return token;
 	}
@@ -43,10 +44,18 @@ public class LoginVo {
 	public void setCompany(String company) {
 		this.company = company;
 	}
+	
+	
+	public String getSessionId() {
+		return sessionId;
+	}
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
 	@Override
 	public String toString() {
 		return "LoginVo [token=" + token + ", photo=" + photo + ", workerId=" + workerId + ", nickname=" + nickname
-				+ ", realname=" + realname + ", company=" + company + "]";
+				+ ", realname=" + realname + ", company=" + company + ", sessionId=" + sessionId + "]";
 	}
 	
 	

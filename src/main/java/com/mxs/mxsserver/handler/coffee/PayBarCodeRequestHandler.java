@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.response.AlipayTradeCancelResponse;
 import com.alipay.api.response.AlipayTradePayResponse;
+import com.mxs.mxsserver.domain.CoffeeInfo;
 import com.mxs.mxsserver.domain.Payindent;
 import com.mxs.mxsserver.handler.RequestHandler;
 import com.mxs.mxsserver.protocol.request.Request;
@@ -60,6 +61,8 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 		
 	@Override
 	public void processRequest(Request request, ChannelHandlerContext ctx) {
+		//TODO 优惠券类型判断，决定支付逻辑
+		log.info("-----------------订单支付请求-----------");
 		boolean flag = true;//用于标识付款过程中的异常情况，终止支付请求
 		PayBarCodeRequest payBarCodeRequest = (PayBarCodeRequest) request;
 		
@@ -69,40 +72,47 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 		//TODO 参数验证
 		String coffeeid = payBarCodeRequest.getCoffeeId();
 		String ip = payBarCodeRequest.getIp();
-		String discount = payBarCodeRequest.getDiscount();
-		if(StringUtils.isNull(discount)) {
-			discount = "0.0";
-		}
 		String auth_code = payBarCodeRequest.getAuthCode();
-//		String auth_code = "135179978859858706";
 		String venderName = payBarCodeRequest.getMachineId();
-		int payMethod = 0;
-		Double price = 0.0, reduce_price = 0.0;
 		boolean isHot = payBarCodeRequest.isHot();
 		int sugar = payBarCodeRequest.getSugar();
+		/**
+		 * 0： 折扣类型，打8折
+		 * 1：优惠具体金额
+		 */
+		int couponsType = payBarCodeRequest.getCouponsType();
+		String discount = payBarCodeRequest.getDiscount();
+		//折扣信息为空，则认为不打折原价乘以1，如果优惠金额为0
+		if(StringUtils.isNull(discount)) {
+			if(0 == couponsType) 
+				discount = "1.0";
+			else
+				discount = "0.0";
+		}
+		int payMethod = 0;
+		Double price = 0.0;//咖啡原价
+		Double reduce_price = 0.0;//折后价
+		Double discount_price = 0.0;//实际价格
 		
 		//根据auth_code判断支付方式
-		if(!StringUtils.isNull(auth_code)) {
-			String pre = auth_code.substring(0, 2);
-			int authPre = Integer.parseInt(pre);
-			if(authPre > 9 && authPre < 15)//微信支付
-				payMethod = 2;
-			if(authPre > 24 && authPre < 31)//支付宝支付
-				payMethod = 1;
-		}
+		payMethod = payMethod(auth_code, payMethod);
 		//确定 咖啡的原价和折扣价
 		if(!StringUtils.isNull(coffeeid)) {
 			//咖啡原价
 			try {
-				price = coffeeInfoService.queryCoffeeInfoForPrice(Integer.parseInt(coffeeid));
+				CoffeeInfo order = coffeeInfoService.queryCoffeeInfoForPrice(Integer.parseInt(coffeeid));
 				//优惠后的价钱
-				if (!StringUtils.isNull(price)) {
-					reduce_price = price - Double.valueOf(discount);
+				if (null != order) {
+					price = order.getPrice();//咖啡原价
+					discount_price = order.getDiscount_price();//折后价
+					if(couponsType == 2)
+						reduce_price = discount_price - Double.valueOf(discount);//最终价
+					else
+						reduce_price = discount_price * Double.valueOf(discount);//最终价
 					if (reduce_price < 0) {//当优惠后的价格小于零后，设置为0
 						reduce_price = 0.1;
 					}
 				}else {
-					//TODO 购买取消
 					flag = false;
 				}
 			} catch (Exception e) {
@@ -120,8 +130,9 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 			payindent.setIndentId(indent_id);
 			payindent.setMachineId(venderName);
 			payindent.setCoffeeId(coffeeid);
-			payindent.setPrice(reduce_price);
-			payindent.setPriceOri(price);
+			payindent.setPrice(reduce_price);//实际价钱
+			payindent.setDiscount_price(discount_price);//折后价
+			payindent.setPriceOri(price);//原始价
 			payindent.setPayMethod(payMethod);
 			payindent.setPayStatus(0);
 			payindent.setCreateTime(new Date());
@@ -178,7 +189,6 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 				//
 				if ("SUCCESS".equals(return_code)){//请求成功
 					//返回给APP，订单是待支付状态
-//					ctx.getChannel().write(payBarCodeResponce);//反馈给APP
 					log.info("----------------微信支付请求成功----------------" + resultMap.toString());
 					if ("SUCCESS".equals(result_code)) {//支付成功
 						log.info("----------------微信支付扣款成功----------------");
@@ -226,20 +236,42 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 //		tradeStatus = true;
 		log.info("----22222----" + tradeStatus);
 		if(tradeStatus) {
-			paySuccess(payindent, payBarCodeResponce);
+			paySuccess(payindent, payBarCodeResponce, payindentService);
 		}else {
-			payFailure(payindent, payBarCodeResponce);
+			payFailure(payindent, payBarCodeResponce, payindentService);
 		}
 		ctx.getChannel().write(payBarCodeResponce);//反馈给APP
-		payindentService.addPayindent(payindent);//更新订单状态
+//		payindentService.addPayindent(payindent);//更新订单状态
+	}
+	/**
+	 * 判断支付方式
+	 * @param auth_code
+	 * @param payMethod
+	 * @return
+	 * @throws NumberFormatException
+	 */
+	private int payMethod(String auth_code, int payMethod) throws NumberFormatException {
+		if(!StringUtils.isNull(auth_code)) {
+			String pre = auth_code.substring(0, 2);
+			int authPre = Integer.parseInt(pre);
+			if(authPre > 9 && authPre < 15)//微信支付
+				payMethod = 2;
+			if(authPre > 24 && authPre < 31)//支付宝支付
+				payMethod = 1;
+		}
+		return payMethod;
 	}
 	/**
 	 * 支付失败
 	 * @param pay
 	 * @param payBarCodeResponce
+	 * @param payindentService
 	 */
-	private void payFailure(Payindent pay, PayBarCodeResponce payBarCodeResponce) {
-		pay.setPayStatus(2);
+	private void payFailure(Payindent pay, PayBarCodeResponce payBarCodeResponce, PayindentService payindentService) {
+		if(null != pay) {
+			pay.setPayStatus(2);
+			payindentService.addPayindent(pay);//更新订单状态
+		}
 		payBarCodeResponce.setStatus("2");
 		payBarCodeResponce.getLinkFrame().resCode = 500;
 	}
@@ -247,10 +279,13 @@ public class PayBarCodeRequestHandler extends RequestHandler {
 	 * 支付成功
 	 * @param pay
 	 * @param payBarCodeResponce
+	 * @param payindentService
 	 */
-	private void paySuccess(Payindent pay, PayBarCodeResponce payBarCodeResponce) {
-		
-		pay.setPayStatus(1);
+	private void paySuccess(Payindent pay, PayBarCodeResponce payBarCodeResponce, PayindentService payindentService) {
+		if(null != pay) {
+			pay.setPayStatus(2);
+			payindentService.addPayindent(pay);//更新订单状态
+		}
 		payBarCodeResponce.setStatus("1");
 		payBarCodeResponce.getLinkFrame().resCode = 200;
 	}

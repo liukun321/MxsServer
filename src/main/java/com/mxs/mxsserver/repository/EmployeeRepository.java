@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.mxs.mxsserver.domain.Employee;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
 	Employee findByPhoneNumber(String phoneNumber);
 

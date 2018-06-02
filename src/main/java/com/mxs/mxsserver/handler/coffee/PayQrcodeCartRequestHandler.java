@@ -79,7 +79,7 @@ public class PayQrcodeCartRequestHandler extends RequestHandler {
 			dosing = indent.getString("dosing");
 //			totalprice += database.Queryprice(coffeeid);
 			//统计购物车中的所有商品的总价
-			totalprice += coffeeInfoService.queryCoffeeInfoForPrice(coffeeid);
+			totalprice += coffeeInfoService.queryCoffeeInfoForPrice(coffeeid).getDiscount_price();
 		}
 
 		Timestamp time = new Timestamp(System.currentTimeMillis());

@@ -34,4 +34,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return employeeRepository.findByPhoneNumberAndPassword(tel, password);
 	}
 
+	@Override
+	public Employee queryEmployeeById(String workerId) {
+		return employeeRepository.findOne(workerId);
+	}
+
 }

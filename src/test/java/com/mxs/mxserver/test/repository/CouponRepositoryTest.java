@@ -21,20 +21,20 @@ public class CouponRepositoryTest {
 	
 	@Test
 	public void saveTest() {
-		Coupons con = new Coupons();
-		con.setCouponCode("654321");
-		Calendar cal = Calendar.getInstance();
-		Date date = new Date();
-//		cal.setTime(date);
-//		cal.add(Calendar.DAY_OF_MONTH, +5);
-		con.setEndTime(date);
-		con.setValue("3.00");
-		con.setId(10002);
-		Coupons cc = couponsRepository.save(con);
-//		Coupons cc = couponsRepository.findByCouponCodeAndEndTimeAfter("123456", date);
-		String dic = cc.getDiscount();
-		if(null != cc)
-			System.out.println(cc.toString());
+//		Coupons con = new Coupons();
+//		con.setCouponCode("654321");
+//		Calendar cal = Calendar.getInstance();
+//		Date date = new Date();
+////		cal.setTime(date);
+////		cal.add(Calendar.DAY_OF_MONTH, +5);
+//		con.setEndTime(date);
+//		con.setValue("3.00");
+//		con.setId(10002);
+//		Coupons cc = couponsRepository.save(con);
+////		Coupons cc = couponsRepository.findByCouponCodeAndEndTimeAfter("123456", date);
+//		String dic = cc.getDiscount();
+//		if(null != cc)
+//			System.out.println(cc.toString());
 //		System.out.println("没有找到优惠券");
 	}
 }

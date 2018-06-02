@@ -17,7 +17,7 @@ import com.mxs.mxsserver.protocol.responce.coffee.UpdateMachineAddressResponce;
 import com.mxs.mxsserver.service.MachineAddressService;
 import com.mxs.mxsserver.util.StringUtils;
 
-//咖啡机物料更新
+//咖啡机地理位置信息更新
 @Component
 public class UpdateMachineAddressHandler extends RequestHandler {
 	private final Logger log = LoggerFactory.getLogger(UpdateMachineAddressHandler.class);

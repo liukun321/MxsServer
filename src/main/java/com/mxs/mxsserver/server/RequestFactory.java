@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.mxs.mxsserver.handler.KeepAliveRequestHandle;
 import com.mxs.mxsserver.handler.LoginRequestHandler;
 import com.mxs.mxsserver.handler.RequestHandler;
-import com.mxs.mxsserver.handler.coffee.AddStockHandler;
+import com.mxs.mxsserver.handler.coffee.CoffeeMachineInitHandler;
 import com.mxs.mxsserver.handler.coffee.AlarmForMaterialResquestHandler;
 import com.mxs.mxsserver.handler.coffee.CancelTradeHandler;
 import com.mxs.mxsserver.handler.coffee.GetAdvPicsRequestHandler;
@@ -69,7 +69,7 @@ public class RequestFactory {
 		//获取咖啡 列表请求
 		registerRequest(GetCoffeeRequest.class, new GetCoffeeRequestHandler());
 		//添加物料，初始化物料请求
-		registerRequest(AddStockRequest.class, new AddStockHandler());
+		registerRequest(AddStockRequest.class, new CoffeeMachineInitHandler());
 //		registerRequest(PayQrcodeCartRequest.class, new PayQrcodeCartRequestHandler());
 //		registerRequest(PayStatusAskCartRequest.class, new PayStatusCartRequestHandler());
 		//咖啡机状态报告请求

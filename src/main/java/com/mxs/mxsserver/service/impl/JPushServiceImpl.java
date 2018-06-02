@@ -1,5 +1,7 @@
 package com.mxs.mxsserver.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.mxs.mxsserver.service.JPushService;
@@ -14,31 +16,36 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
+/**
+ * 
+ * @author liukun
+ *
+ */
 @Service
 public class JPushServiceImpl implements JPushService {
-
-	private final static String APPKET = "44262636e2afd75d9b9f7932";
+	private final Logger log = LoggerFactory.getLogger(JPushServiceImpl.class);
+	private final String APPKEY = "159b0042e6d74f2c363b6447";//44262636e2afd75d9b9f7932
 	 
-    private final static String MASTERSECRET = "ae5c0ab5f093b2aba1f8ce25";
+    private final String MASTERSECRET = "79c84a3aa54b1f7e84b739a4";//ae5c0ab5f093b2aba1f8ce25
  
-    private static JPushClient jPushClient = new JPushClient(MASTERSECRET, APPKET);//通知默认保留24小时。
+    private JPushClient jPushClient = new JPushClient(MASTERSECRET, APPKEY);//通知默认保留24小时。
 	
 	@Override
 	public int sendToRegistrationId(String registrationId, String notification_alert, String notification_title,
 			String extrasparam) {
 		int result = 0;
         try {
-            PushPayload pushPayload= JPushServiceImpl.buildPushObjectWithRegistrationId(registrationId, 
+            PushPayload pushPayload = this.buildPushObjectWithRegistrationId(registrationId, 
             		notification_alert, notification_title, extrasparam);
-            System.out.println(pushPayload);
-            PushResult pushResult=jPushClient.sendPush(pushPayload);  //发送推送对象
+            log.info(pushPayload.toString());
+            PushResult pushResult = jPushClient.sendPush(pushPayload);  //发送推送对象
             if(pushResult.getResponseCode() == 200) {  //状态码等于200 为成功
                 result=1;
             }
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+        	log.error(e.getMessage(), e);
         }
         
          return result;
@@ -48,18 +55,18 @@ public class JPushServiceImpl implements JPushService {
 	public int sendToAll(String notification_alert, String notification_title, String extrasparam) {
 		int result = 0;
         try {
-            PushPayload pushPayload= JPushServiceImpl.buildPushObjectWithAll(notification_alert, 
+            PushPayload pushPayload = this.buildPushObjectWithAll(notification_alert, 
             		notification_title, extrasparam);
-            System.out.println(pushPayload);
-            PushResult pushResult=jPushClient.sendPush(pushPayload);  //发送推送对象
-            //System.out.println(pushResult);
+            log.info(pushPayload.toString());
+            PushResult pushResult = jPushClient.sendPush(pushPayload);  //发送推送对象
+            //log.info(pushResult);
             if(pushResult.getResponseCode() == 200) {  //状态码等于200 为成功
                 result=1;
             }
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+        	 log.error(e.getMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+        	 log.error(e.getMessage(), e);
         }
         
          return result;
@@ -70,18 +77,18 @@ public class JPushServiceImpl implements JPushService {
 		
 		int result = 0;
         try {
-            PushPayload pushPayload= JPushServiceImpl.buildPushObjectWithIos(notification_alert, 
+            PushPayload pushPayload= this.buildPushObjectWithIos(notification_alert, 
             		notification_title, extrasparam);
-            System.out.println(pushPayload);
-            PushResult pushResult=jPushClient.sendPush(pushPayload);  //发送推送对象
-            //System.out.println(pushResult);
+            log.info(pushPayload.toString());
+            PushResult pushResult = jPushClient.sendPush(pushPayload);  //发送推送对象
+            //log.info(pushResult);
             if(pushResult.getResponseCode() == 200) {  //状态码等于200 为成功
                 result=1;
             }
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+        	 log.error(e.getMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+        	 log.error(e.getMessage(), e);
         }
         
          return result;
@@ -92,18 +99,18 @@ public class JPushServiceImpl implements JPushService {
 		
 		int result = 0;
         try {
-            PushPayload pushPayload= JPushServiceImpl.buildPushObjectWithAndroid(notification_alert, 
+            PushPayload pushPayload = this.buildPushObjectWithAndroid(notification_alert, 
             		notification_title, extrasparam);
-            System.out.println(pushPayload);
-            PushResult pushResult=jPushClient.sendPush(pushPayload);  //发送推送对象
-            //System.out.println(pushResult);
+            log.info(pushPayload.toString());
+            PushResult pushResult = jPushClient.sendPush(pushPayload);  //发送推送对象
+            //log.info(pushResult);
             if(pushResult.getResponseCode() == 200) {  //状态码等于200 为成功
                 result=1;
             }
         } catch (APIConnectionException e) {
-            e.printStackTrace();
+        	 log.error(e.getMessage(), e);
         } catch (APIRequestException e) {
-            e.printStackTrace();
+        	 log.error(e.getMessage(), e);
         }
         
          return result;
@@ -117,7 +124,7 @@ public class JPushServiceImpl implements JPushService {
 	 * @param extrasparam  扩展字段
 	 * @return  返回推送对象
 	 */
-	private static PushPayload buildPushObjectWithRegistrationId(String registrationId, String notification_alert, String notification_title,
+	private PushPayload buildPushObjectWithRegistrationId(String registrationId, String notification_alert, String notification_title,
 			String extrasparam) {
 		return PushPayload.newBuilder()
 	            //指定要推送的平台，all代表当前应用配置了的所有平台，也可以传android等具体平台
@@ -167,7 +174,7 @@ public class JPushServiceImpl implements JPushService {
 	 * @param extrasparam  扩展字段
 	 * @return  返回推送对象
 	 */
-	private static PushPayload buildPushObjectWithAll(String notification_alert, 
+	private PushPayload buildPushObjectWithAll(String notification_alert, 
 			String notification_title, String extrasparam) {
 		return PushPayload.newBuilder()
 	            //指定要推送的平台，all代表当前应用配置了的所有平台，也可以传android等具体平台
@@ -217,7 +224,7 @@ public class JPushServiceImpl implements JPushService {
 	 * @param extrasparam  扩展字段
 	 * @return  返回推送对象
 	 */
-	private static PushPayload buildPushObjectWithIos(String notification_alert, 
+	private PushPayload buildPushObjectWithIos(String notification_alert, 
 			String notification_title, String extrasparam) {
 		return PushPayload.newBuilder()
 	            //指定要推送的平台，all代表当前应用配置了的所有平台，也可以传android等具体平台
@@ -254,7 +261,7 @@ public class JPushServiceImpl implements JPushService {
 	 * @param extrasparam  扩展字段
 	 * @return  返回推送对象
 	 */
-	private static PushPayload buildPushObjectWithAndroid(String notification_alert, 
+	private PushPayload buildPushObjectWithAndroid(String notification_alert, 
 			String notification_title, String extrasparam) {
 		return PushPayload.newBuilder()
 	            //指定要推送的平台，all代表当前应用配置了的所有平台，也可以传android等具体平台
@@ -268,12 +275,19 @@ public class JPushServiceImpl implements JPushService {
 		            	.setAlert(notification_alert)   //设置通知内容（必填）
 		                .setTitle(notification_title)	//设置通知标题（可选）
 		                //此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
-		                .addExtra("androidNotification extras key",extrasparam)
+		                .addExtra("androidNotification extras key", extrasparam)
 		                .build())
 		            	.build())
 		            	.build();
 	}
 
-	
+	public static void main(String[] args) { 
+		JPushService jPushService = new JPushServiceImpl();
+		String registrationId = "190e35f7e0742e12469";
+		String notification_alert = "一号咖啡机的2号料盒缺料";
+		String notification_title = "咖啡机缺料预警";
+		String extrasparam = "";
+		jPushService.sendToAllAndroid(notification_alert, notification_title, "");
+	}
 
 }

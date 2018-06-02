@@ -21,12 +21,12 @@ public class ErrorRecordServiceTest {
 	static CountDownLatch countDownLatch = new CountDownLatch(3);
 	@Test
 	public void test() {
-		ErrorRecord error = new ErrorRecord();
-		error.setMachineId("ad12324");
-		error.setStartTime(new Date());
-		error.setType(1);
-		error.setWorkerId("10342441");
-		error = errorRecordService.addErrorRecord(error);
+//		ErrorRecord error = new ErrorRecord();
+//		error.setMachineId("ad12324");
+//		error.setStartTime(new Date());
+//		error.setType(1);
+//		error.setWorkerId("10342441");
+//		error = errorRecordService.addErrorRecord(error);
 //		System.out.println(error.toString());
 //		
 //		Thread th1 = new Thread(new Runnable() {

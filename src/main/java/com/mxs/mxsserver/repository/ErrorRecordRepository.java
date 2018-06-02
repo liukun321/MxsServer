@@ -9,7 +9,7 @@ import com.mxs.mxsserver.domain.ErrorRecord;
 @Repository
 public interface ErrorRecordRepository extends JpaRepository<ErrorRecord, Integer> {
 
-	ErrorRecord findByMachineIdAndEndTimeIsNull(String machineId);
+	List<ErrorRecord> findByMachineIdAndEndTimeIsNull(String machineId);
 
 	List<ErrorRecord> findByMachineId(String machineId);
 

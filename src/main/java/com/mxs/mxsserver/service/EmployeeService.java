@@ -9,5 +9,7 @@ public interface EmployeeService {
 	
 	Employee login4Employee(String tel, String password);
 	
+	Employee queryEmployeeById(String workerId);
+	
 		
 }

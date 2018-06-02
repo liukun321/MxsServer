@@ -5,7 +5,7 @@ server:
 #mysql  useLegacyDatetimeCode=false&serverTimezone=GMT-8 use beijing time Asia/Shanghai  &useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
 spring:
     datasource:
-        url: jdbc:mysql://47.98.164.44:3306/coffeemachine?useUnicode=true&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://47.98.164.44:3306/coffeemachine?useUnicode=true&useSSL=false&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
         username: root
         password: root
         driver-class-name: com.mysql.jdbc.Driver

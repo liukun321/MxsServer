@@ -18,6 +18,8 @@ public class MxsConstants {
 	public static final String ERROR = "error";
 	//成功的状态码
 	public static final String CODE0 = "200";
+	
+	public static final String CODE = "10001";
 	//失败状态码1， 表示代码运行发生异常
 	public static final String CODE1 = "0001";
 	//失败状态码2，表示电话号码格式不匹配
@@ -29,4 +31,16 @@ public class MxsConstants {
 	//重复数据
 	public static final String CODE5 = "0005";
 	
+	//咖啡机料盒编号与实际料盒名称对应
+	public static final String NUMBER1 = "正常咖啡豆";
+	public static final String NUMBER2 = "低因咖啡豆";
+	public static final String NUMBER3 = "抹茶粉";
+	public static final String NUMBER4 = "可可粉";
+	public static final String NUMBER5 = "牛奶";
+	public static final String NUMBER6 = "香草糖浆";
+	public static final String NUMBER7 = "榛果糖浆";
+	public static final String NUMBER8 = "焦糖糖浆";
+	public static final String NUMBER9 = "纯糖浆";
+	public static final String NUMBER10 = "桶装水";
+	public static final String NUMBER11 = "杯子";
 }

@@ -34,6 +34,8 @@ public class Payindent implements Serializable{
 	 */
 	@NotNull
 	private String coffeeId;
+	@NotNull
+	private Double discount_price;
 	/**
 	 * 订单原价
 	 */
@@ -76,10 +78,10 @@ public class Payindent implements Serializable{
 	 * false 冷饮
 	 */
 	@NotNull
-	private boolean isHot;
+	private Boolean isHot;
 	/**
 	 * 糖度
-	 * 0 1 2 3 4
+	 * 0 3 5 7 10
 	 */
 	@NotNull
 	private Integer sugar;
@@ -110,7 +112,7 @@ public class Payindent implements Serializable{
 	public String getOrderId() {
 		return orderId;
 	}
-	public boolean isHot() {
+	public Boolean isHot() {
 		return isHot;
 	}
 	public Integer getSugar() {
@@ -143,11 +145,19 @@ public class Payindent implements Serializable{
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-	public void setHot(boolean isHot) {
+	public void setHot(Boolean isHot) {
 		this.isHot = isHot;
 	}
 	public void setSugar(Integer sugar) {
 		this.sugar = sugar;
+	}
+	
+	
+	public Double getDiscount_price() {
+		return discount_price;
+	}
+	public void setDiscount_price(Double discount_price) {
+		this.discount_price = discount_price;
 	}
 	@Override
 	public int hashCode() {
@@ -155,6 +165,7 @@ public class Payindent implements Serializable{
 		int result = 1;
 		result = prime * result + ((coffeeId == null) ? 0 : coffeeId.hashCode());
 		result = prime * result + ((createTime == null) ? 0 : createTime.hashCode());
+		result = prime * result + ((discount_price == null) ? 0 : discount_price.hashCode());
 		result = prime * result + ((indentId == null) ? 0 : indentId.hashCode());
 		result = prime * result + (isHot ? 1231 : 1237);
 		result = prime * result + ((machineId == null) ? 0 : machineId.hashCode());
@@ -184,6 +195,11 @@ public class Payindent implements Serializable{
 			if (other.createTime != null)
 				return false;
 		} else if (!createTime.equals(other.createTime))
+			return false;
+		if (discount_price == null) {
+			if (other.discount_price != null)
+				return false;
+		} else if (!discount_price.equals(other.discount_price))
 			return false;
 		if (indentId == null) {
 			if (other.indentId != null)
@@ -231,9 +247,10 @@ public class Payindent implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Payindent [indentId=" + indentId + ", machineId=" + machineId + ", coffeeId=" + coffeeId + ", priceOri="
-				+ priceOri + ", price=" + price + ", payMethod=" + payMethod + ", payStatus=" + payStatus
-				+ ", createTime=" + createTime + ", orderId=" + orderId + ", isHot=" + isHot + ", sugar=" + sugar + "]";
+		return "Payindent [indentId=" + indentId + ", machineId=" + machineId + ", coffeeId=" + coffeeId
+				+ ", discount_price=" + discount_price + ", priceOri=" + priceOri + ", price=" + price + ", payMethod="
+				+ payMethod + ", payStatus=" + payStatus + ", createTime=" + createTime + ", orderId=" + orderId
+				+ ", isHot=" + isHot + ", sugar=" + sugar + "]";
 	}
 	
 }

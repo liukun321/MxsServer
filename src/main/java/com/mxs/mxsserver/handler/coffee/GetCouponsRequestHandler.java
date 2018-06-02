@@ -34,6 +34,7 @@ public class GetCouponsRequestHandler extends RequestHandler {
 	}
 	@Override
 	public void processRequest(Request request, ChannelHandlerContext ctx) {
+		log.info("------------------查询优惠券信息，验证是否有效-----------------");
 		GetCouponsRequest getCouponsRequest = (GetCouponsRequest)request;
 		String couponCode = getCouponsRequest.getCouponCode();
 		log.info(getCouponsRequest.getCouponCode() + "--" + getCouponsRequest.getLinkFrame().resCode + "===" + request.getLinkFrame().serialId);
@@ -62,7 +63,7 @@ public class GetCouponsRequestHandler extends RequestHandler {
 				default:
 					break;
 				}
-//				result.setIs_use(true);//优惠券已经使用过
+				result.setIs_use(true);//优惠券已经使用过
 				couponsService.updateCoupons(result);
 			}else {
 				jsonObj.put("discount", null);//0

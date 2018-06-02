@@ -6,7 +6,7 @@ import com.mxs.mxsserver.protocol.pack.PackIndex;
 import com.mxs.mxsserver.protocol.pack.Unpack;
 
 
-@RequestID(service = ServiceID.SVID_LITE_LINK, command = { ILinkService.CommandId.CID_HEARTBEAT
+@RequestID(service = ServiceID.SVID_LITE_LINK, command = { ILinkService.CommandId.CID_REQUEST_HEARTBEAT
 		+ "" })
 public class KeepAliveRequest extends Request {
 //	@PackIndex(1)

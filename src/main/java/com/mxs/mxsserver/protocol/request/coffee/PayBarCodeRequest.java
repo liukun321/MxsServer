@@ -41,8 +41,8 @@ public class PayBarCodeRequest extends SingleRequest {
 	@PackIndex(7)
     private String ip;
 	//优惠券类型
-//	@PackIndex(8)
-//	private int couponsType;
+	@PackIndex(8)
+	private int couponsType;
 	
 	@Override
     public Unpack unpackBody(Unpack unpack) throws Exception {
@@ -53,7 +53,7 @@ public class PayBarCodeRequest extends SingleRequest {
 		isHot = unpack.popBoolean();
 		sugar = unpack.popInt();
 		ip = unpack.popVarstr();
-//		couponsType = unpack.popInt();
+		couponsType = unpack.popInt();
         return null;
     }
 
@@ -62,14 +62,14 @@ public class PayBarCodeRequest extends SingleRequest {
 		return coffeeId;
 	}
 
-//	public int getCouponsType() {
-//		return couponsType;
-//	}
-//
-//
-//	public void setCouponsType(int couponsType) {
-//		this.couponsType = couponsType;
-//	}
+	public int getCouponsType() {
+		return couponsType;
+	}
+
+
+	public void setCouponsType(int couponsType) {
+		this.couponsType = couponsType;
+	}
 
 
 	public String getAuthCode() {

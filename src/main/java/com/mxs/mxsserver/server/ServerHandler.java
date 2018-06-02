@@ -28,6 +28,11 @@ public class ServerHandler extends SimpleChannelHandler {
 	
 	public static Map<String, Channel> channels = new ConcurrentHashMap();
 	
+	
+	public ServerHandler() {
+		dealRequest = new DealRequest();
+	}
+
 	/**
 	 * 不管是否已经连接，都将执行
 	 */

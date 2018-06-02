@@ -31,10 +31,9 @@ public class NioServer{
 	private DealRequest dealRequest;
 	public static NioServer nioServer;
 	
-    private int port = 8010;
+    private int port = 8060;
 
 	public NioServer() {
-		dealRequest = new DealRequest();
 		setupNetty();
 	}
 

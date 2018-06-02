@@ -21,8 +21,8 @@ public class UpdateMachineAddressRequest extends SingleRequest {
     private double latitude;
     @PackIndex(5)
     private double longitude;
-    @PackIndex(6)
-    private String city;
+//    @PackIndex(6)
+//    private String city;
 	
    @Override
     public Unpack unpackBody(Unpack unpack) throws Exception {
@@ -31,7 +31,7 @@ public class UpdateMachineAddressRequest extends SingleRequest {
 	   address = unpack.popVarstr();
 	   latitude = unpack.popDouble();
 	   longitude = unpack.popDouble();
-	   city = unpack.popVarstr();
+//	   city = unpack.popVarstr();
 	   return null;
     }
 
@@ -75,12 +75,12 @@ public class UpdateMachineAddressRequest extends SingleRequest {
 		this.longitude = longitude;
 	}
 
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
+//	public String getCity() {
+//		return city;
+//	}
+//
+//	public void setCity(String city) {
+//		this.city = city;
+//	}
 
 }

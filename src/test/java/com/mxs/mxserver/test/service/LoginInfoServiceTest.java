@@ -22,14 +22,14 @@ public class LoginInfoServiceTest {
 	@Test
 	public void loginTest() {
 		
-		Login ll = loginInfoService.queryUserInfo("1", "2");
-		System.out.println(ll);
-		
-		LoginInfo loginInfo = loginInfoRepository.findByVenderName("ad");
-		if(null != loginInfo) {
-			
-			System.out.println(loginInfo.getVenderPassword());
-		}
+//		Login ll = loginInfoService.queryUserInfo("1", "2");
+//		System.out.println(ll);
+//		
+//		LoginInfo loginInfo = loginInfoRepository.findByVenderName("ad");
+//		if(null != loginInfo) {
+//			
+//			System.out.println(loginInfo.getVenderPassword());
+//		}
 		
 	}
 }

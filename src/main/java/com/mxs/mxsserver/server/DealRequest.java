@@ -15,7 +15,7 @@ import com.mxs.mxsserver.protocol.request.Request;
 
 public class DealRequest {
 	private final Logger log = LoggerFactory.getLogger(DealRequest.class);
-	private ExecutorService pool = Executors.newFixedThreadPool(3); 
+	private ExecutorService pool = Executors.newFixedThreadPool(7); 
 	public void dealRequest(LinkFrame header, Unpack body, ChannelHandlerContext ctx) {
 		if (!RequestFactory.getInstance().existsRequest(header)) {
 			log.info("Response not registered, SID: " + header.serviceId + " CID: " + header.commandId);
@@ -35,6 +35,7 @@ public class DealRequest {
 	}
 	private void handlePacket(LinkFrame header, Unpack body, Integer queryRequestPriority,
 			ChannelHandlerContext ctx) {
+		log.info("----handlePacket------");
 		Request request = RequestFactory.getInstance().newRequest(header);
 		// check
 		if (request == null) {

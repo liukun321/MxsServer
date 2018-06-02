@@ -24,7 +24,7 @@ public interface ICoffeeService {
 		
 		public static final short APP_DOWNLOAD = 12;
 
-		public static final short PAY_ALI_SONICWAVE = 13;
+		public static final short PICK_UP = 13;
 
         public static final short CANCEL_TRADE = 16;
 

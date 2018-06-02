@@ -39,7 +39,7 @@ public class ResultBean<T> {
 	}
 	
 	public static ResultBean error() {
-		return new ResultBean(MxsConstants.CODE1, MxsConstants.ERROR, "");
+		return new ResultBean(MxsConstants.CODE0, MxsConstants.ERROR, "");
 	}
 	public String getCode() {
 		return code;

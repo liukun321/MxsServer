@@ -159,12 +159,12 @@ public class WechatPayUtils {
 
 		// 商户秘钥
 		public String getKey() {
-			return "";
+			return "Mxs88888Mxs88888Mxs88888Mxs88888";
 		}
 
 		// 商户号
 		public String getMchID() {
-			return "";
+			return "1503728561";
 		}
 
 		@Override

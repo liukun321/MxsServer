@@ -26,7 +26,7 @@ public class CoffeeMaterial implements Serializable{
 	 *物料盒编号 
 	 */
 	@NotNull
-	private String stackNumber;
+	private Integer stackNumber;
 	/**
 	 * 咖啡机编号
 	 */
@@ -35,7 +35,6 @@ public class CoffeeMaterial implements Serializable{
 	/**
 	 * 物料Id
 	 */
-	@NotNull
 	private Integer materialId;
 	/**
 	 * 物料种类
@@ -45,23 +44,17 @@ public class CoffeeMaterial implements Serializable{
 	/**
 	 * 物料的品牌
 	 */
-	@NotNull
 	private String brand;
-	/**
-	 * 物料剩余量
-	 */
-	@NotNull
-	private Double remainAccount;
 	/**
 	 * 物料状态
 	 * 0-正常 1-缺料 2- 严重缺料 3-停机
 	 */
 	@NotNull
-	private String status;
+	private Integer status;
 	public Integer getId() {
 		return id;
 	}
-	public String getStackNumber() {
+	public Integer getStackNumber() {
 		return stackNumber;
 	}
 	public String getMachineId() {
@@ -76,16 +69,13 @@ public class CoffeeMaterial implements Serializable{
 	public String getBrand() {
 		return brand;
 	}
-	public Double getRemainAccount() {
-		return remainAccount;
-	}
-	public String getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public void setStackNumber(String stackNumber) {
+	public void setStackNumber(Integer stackNumber) {
 		this.stackNumber = stackNumber;
 	}
 	public void setMachineId(String machineId) {
@@ -100,10 +90,7 @@ public class CoffeeMaterial implements Serializable{
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-	public void setRemainAccount(Double remainAccount) {
-		this.remainAccount = remainAccount;
-	}
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	@Override
@@ -115,7 +102,6 @@ public class CoffeeMaterial implements Serializable{
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((machineId == null) ? 0 : machineId.hashCode());
 		result = prime * result + ((materialId == null) ? 0 : materialId.hashCode());
-		result = prime * result + ((remainAccount == null) ? 0 : remainAccount.hashCode());
 		result = prime * result + ((stackNumber == null) ? 0 : stackNumber.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
@@ -154,11 +140,6 @@ public class CoffeeMaterial implements Serializable{
 				return false;
 		} else if (!materialId.equals(other.materialId))
 			return false;
-		if (remainAccount == null) {
-			if (other.remainAccount != null)
-				return false;
-		} else if (!remainAccount.equals(other.remainAccount))
-			return false;
 		if (stackNumber == null) {
 			if (other.stackNumber != null)
 				return false;
@@ -174,9 +155,8 @@ public class CoffeeMaterial implements Serializable{
 	@Override
 	public String toString() {
 		return "CoffeeMaterial [id=" + id + ", stackNumber=" + stackNumber + ", machineId=" + machineId
-				+ ", materialId=" + materialId + ", category=" + category + ", brand=" + brand + ", remainAccount="
-				+ remainAccount + ", status=" + status + "]";
+				+ ", materialId=" + materialId + ", category=" + category + ", brand=" + brand + ", status=" + status
+				+ "]";
 	}
-	
 	
 }

@@ -2,25 +2,24 @@ package com.mxs.mxsserver.vo.result;
 
 public class MachineVo {
 	//咖啡机的ID
-	private String materialId;
+	private String machineId;
 	//咖啡机的版本号
-	private Integer materialVersiion;
-	public String getMaterialId() {
-		return materialId;
+	private Integer machineVersion;
+	public String getMachineId() {
+		return machineId;
 	}
-	public Integer getMaterialVersiion() {
-		return materialVersiion;
+	public Integer getMachineVersion() {
+		return machineVersion;
 	}
-	public void setMaterialId(String materialId) {
-		this.materialId = materialId;
+	public void setMachineId(String machineId) {
+		this.machineId = machineId;
 	}
-	public void setMaterialVersiion(Integer materialVersiion) {
-		this.materialVersiion = materialVersiion;
+	public void setMachineVersion(Integer machineVersion) {
+		this.machineVersion = machineVersion;
 	}
 	@Override
 	public String toString() {
-		return "MachineVo [materialId=" + materialId + ", materialVersiion=" + materialVersiion + "]";
+		return "MachineVo [machineId=" + machineId + ", machineVersion=" + machineVersion + "]";
 	}
-	
 	
 }
